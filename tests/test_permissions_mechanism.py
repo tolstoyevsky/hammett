@@ -1,23 +1,29 @@
-"""The module contains the tests for the permissions mechanism."""
+"""The module contains the tests for the permissions mechanism.
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202, D401
+In the case of testing the permission mechanism, it is necessary to create
+a new Screen class in each test case. This is because the Screen object is
+a singleton, and when wrapping all its handlers, they share their state between
+the tests, leading to unstable behavior.
+"""
 
-from typing import TYPE_CHECKING, cast
+# ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205, D401, S106
 
+from hammett.core import Application
 from hammett.core.constants import DEFAULT_STATE
-from hammett.core.permission import apply_permission_to
+from hammett.core.handlers import register_button_handler
+from hammett.core.mixins import StartMixin
+from hammett.core.permission import Permission, ignore_permissions
+from hammett.core.screen import Screen
 from hammett.test.base import BaseTestCase
+from hammett.test.utils import override_settings
 from tests.base import (
     PERMISSION_DENIED_STATE,
     PERMISSIONS_ORDER,
     BaseTestPermission,
     TestDenyingPermission,
-    TestGivingPermission,
-    TestScreen,
+    TestStartScreen,
 )
-
-if TYPE_CHECKING:
-    from hammett.types import Handler, State
+from tests.test_application import _APPLICATION_TEST_NAME
 
 
 class TestPermissionWithSyncChecker(BaseTestPermission):
@@ -32,6 +38,26 @@ class MainPermission(BaseTestPermission):
     """The class implements a main permission that is always given."""
 
 
+class PermissionWithoutHasPermissionMethod(Permission):
+    """The class represents a permission that does not implement
+    the mandatory method `has_permission`.
+    """
+
+    async def handle_permission_denied(self, _update, _context):
+        """A stub handler for the testing purposes."""
+        return PERMISSION_DENIED_STATE
+
+
+class PermissionWithoutHandlePermissionDeniedMethod(Permission):
+    """The class represents a permission that does not implement
+    the mandatory method `handle_permission_denied`.
+    """
+
+    def has_permission(self, _update, _context):
+        """A stub permission checker for the testing purposes."""
+        return False
+
+
 class SubPermission(BaseTestPermission):
     """The class implements a sub permission that is always given."""
 
@@ -39,48 +65,206 @@ class SubPermission(BaseTestPermission):
 class PermissionsTests(BaseTestCase):
     """The class implements the tests for the permissions mechanism."""
 
+    @staticmethod
+    def _init_application(screens=None):
+        """Returns an initialized application."""
+        Application(
+            _APPLICATION_TEST_NAME,
+            entry_point=TestStartScreen,
+            states={
+                DEFAULT_STATE: screens,
+            },
+        )
+
+    @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
+    async def test_wrapping_handler_with_permission_specified(self):
+        """Tests the case when a handler is wrapped with a permission."""
+
+        class ScreenWithHandler(Screen):
+            """The class implements a screen with a handler."""
+
+            description = 'Test description'
+
+            @register_button_handler
+            async def handler(self, _update, _context):
+                """A stub handler for the testing purposes."""
+                return DEFAULT_STATE
+
+        self._init_application([ScreenWithHandler])
+        screen = ScreenWithHandler()
+
+        state = await screen.handler(self.update, self.context)
+        self.assertEqual(state, PERMISSION_DENIED_STATE)
+
+    @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
+    async def test_wrapping_start_method_with_permission_specified(self):
+        """Tests the case when the start method is wrapped with a permission."""
+
+        class TestStartScreen(StartMixin):
+            """The class implements a start screen for this test."""
+
+            description = 'A test StartScreen description.'
+
+            async def start(self, _update, _context):
+                """Invoked on the /start command."""
+                return
+
+        self._init_application([TestStartScreen])
+        screen = TestStartScreen()
+
+        state = await screen.start(self.update, self.context)
+        self.assertEqual(state, PERMISSION_DENIED_STATE)
+
+    @override_settings(PERMISSIONS=[
+        'tests.test_permissions_mechanism.MainPermission',
+        'tests.test_permissions_mechanism.SubPermission',
+    ], TOKEN='secret-token')
     async def test_execution_order_of_permissions(self):
         """Tests the scenario with multiple permission classes where
         strict execution order is required.
         """
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
         screen = TestScreen()
-        wrapped_handler = apply_permission_to(screen.move)
-        await wrapped_handler(self.update, self.context)
+
+        await screen.move(self.update, self.context)
         expected = [
             'MainPermission.has_permission',
             'SubPermission.has_permission',
         ]
         self.assertEqual(PERMISSIONS_ORDER, expected)
 
+    @override_settings(PERMISSIONS=['tests.base.TestGivingPermission'], TOKEN='secret-token')
     async def test_giving_permission(self):
         """Tests the case when the permission is giving."""
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
         screen = TestScreen()
-        source = cast('Handler[..., State]', screen.move)
 
-        permission_instance = TestGivingPermission()
-        handler = permission_instance.check_permission(source)
-
-        state = await handler(self.update, self.context)
+        state = await screen.move(self.update, self.context)
         self.assertEqual(state, DEFAULT_STATE)
 
+    @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_denying_permission(self):
         """Tests the case when the permission is denied."""
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
         screen = TestScreen()
-        source = cast('Handler[..., State]', screen.move)
 
-        permission_instance = TestDenyingPermission()
-        handler = permission_instance.check_permission(source)
-
-        state = await handler(self.update, self.context)
+        state = await screen.move(self.update, self.context)
         self.assertEqual(state, PERMISSION_DENIED_STATE)
 
+    @override_settings(PERMISSIONS=[
+        'tests.test_permissions_mechanism.TestPermissionWithSyncChecker',
+    ], TOKEN='secret-token')
     async def test_sync_permission_denied(self):
         """Tests the case when the permission checker is a synchronous."""
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
         screen = TestScreen()
-        source = cast('Handler[..., State]', screen.move)
 
-        permission_instance = TestPermissionWithSyncChecker()
-        handler = permission_instance.check_permission(source)
-
-        state = await handler(self.update, self.context)
+        state = await screen.move(self.update, self.context)
         self.assertEqual(state, PERMISSION_DENIED_STATE)
+
+    @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
+    async def test_ignoring_one_permission(self):
+        """Tests the case when one permission is ignored."""
+
+        class ScreenWithIgnorePermissionHandler(Screen):
+            """The class implements a screen with a handler that ignores
+            the TestDenyingPermission permission.
+            """
+
+            description = 'Test description'
+
+            @ignore_permissions([TestDenyingPermission])
+            @register_button_handler
+            async def handler(self, _update, _context):
+                """A handler which ignores TestDenyingPermission permission."""
+                return DEFAULT_STATE
+
+        self._init_application([ScreenWithIgnorePermissionHandler])
+        screen = ScreenWithIgnorePermissionHandler()
+
+        state = await screen.handler(self.update, self.context)
+        self.assertEqual(state, DEFAULT_STATE)
+
+    @override_settings(PERMISSIONS=[
+        'tests.base.TestGivingPermission',
+        'tests.base.TestDenyingPermission',
+    ], TOKEN='secret-token')
+    async def test_ignoring_second_permission(self):
+        """Tests the case when the second permission is ignored."""
+
+        class ScreenWithIgnorePermissionHandler(Screen):
+            """The class implements a screen with a handler that ignores
+            the TestDenyingPermission permission.
+            """
+
+            description = 'Test description'
+
+            @ignore_permissions([TestDenyingPermission])
+            @register_button_handler
+            async def handler(self, _update, _context):
+                """A handler which ignores TestDenyingPermission permission."""
+                return DEFAULT_STATE
+
+        self._init_application([ScreenWithIgnorePermissionHandler])
+        screen = ScreenWithIgnorePermissionHandler()
+
+        state = await screen.handler(self.update, self.context)
+        self.assertEqual(state, DEFAULT_STATE)
+
+    @override_settings(PERMISSIONS=[
+        'tests.test_permissions_mechanism.PermissionWithoutHasPermissionMethod',
+    ], TOKEN='secret-token')
+    async def test_has_permission_method_is_not_implemented(self):
+        """Tests the case when the has_permission method is not implemented."""
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
+        screen = TestScreen()
+
+        with self.assertRaises(NotImplementedError):
+            await screen.move(self.update, self.context)
+
+    @override_settings(PERMISSIONS=[
+        'tests.test_permissions_mechanism.PermissionWithoutHandlePermissionDeniedMethod',
+    ], TOKEN='secret-token')
+    async def test_handle_permission_denied_method_is_not_implemented(self):
+        """Tests the case when the handle_permission_denied method is not implemented."""
+
+        class TestScreen(Screen):
+            """The class implements a screen for this test."""
+
+            description = 'A test description.'
+
+        self._init_application([TestScreen])
+        screen = TestScreen()
+
+        with self.assertRaises(NotImplementedError):
+            await screen.move(self.update, self.context)
