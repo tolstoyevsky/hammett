@@ -15,6 +15,14 @@ services:
       - valkey
     restart: always
 
+  multi-state-bot:
+    build:
+      dockerfile: ./multi_state_bot/Dockerfile
+    env_file: ./multi_state_bot/.env
+    depends_on:
+      - valkey
+    restart: always
+
   say-hello-bot:
     build:
       dockerfile: ./say_hello_bot/Dockerfile
