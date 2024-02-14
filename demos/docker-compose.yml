@@ -7,6 +7,14 @@ services:
       - valkey
     restart: always
 
+  hide-keyboard-bot:
+    build:
+      dockerfile: ./hide_keyboard_bot/Dockerfile
+    env_file: ./hide_keyboard_bot/.env
+    depends_on:
+      - valkey
+    restart: always
+
   say-hello-bot:
     build:
       dockerfile: ./say_hello_bot/Dockerfile
