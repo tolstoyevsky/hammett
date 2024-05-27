@@ -35,15 +35,15 @@ class RouteMixin(Screen):
         self: 'Self',
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
-        routes: 'Routes',
     ) -> 'State':
         """Return the first found state in the routes."""
         current_state = await self.get_current_state(update, context)
 
-        for route in routes:
-            route_states, return_state = route
-            if current_state in route_states:
-                return return_state
+        if self.routes:
+            for route in self.routes:
+                route_states, return_state = route
+                if current_state in route_states:
+                    return return_state
 
         return current_state
 
@@ -60,9 +60,7 @@ class RouteMixin(Screen):
         config.as_new_message = True
 
         await self.render(update, context, config=config)
-        return await self._get_return_state_from_routes(
-            update, context, self.routes,  # type: ignore[arg-type]
-        )
+        return await self._get_return_state_from_routes(update, context)
 
     async def smove(
         self: 'Self',
@@ -76,9 +74,7 @@ class RouteMixin(Screen):
         config = await self.get_config(update, context, **kwargs)
 
         await self.render(update, context, config=config)
-        return await self._get_return_state_from_routes(
-            update, context, self.routes,  # type: ignore[arg-type]
-        )
+        return await self._get_return_state_from_routes(update, context)
 
 
 class StartMixin(Screen):
