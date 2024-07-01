@@ -1,6 +1,10 @@
 """The module contains the global Hammett exception and warning classes."""
 
 
+class CallbackNotProvided(Exception):
+    """Raised when a callback function for a job has not been provided."""
+
+
 class CommandNameIsEmpty(Exception):
     """Raised when trying to register a handler for
     a command with an empty name (i.e., '/').
@@ -9,6 +13,10 @@ class CommandNameIsEmpty(Exception):
 
 class FailedToGetDataAttributeOfQuery(Exception):
     """Raised when the attempt to get a data attribute of a query fails."""
+
+
+class JobKwargsNotProvided(Exception):
+    """Raised when `job_kwargs` for a job has not been provided."""
 
 
 class LocalePathIsNotSpecified(Exception):
