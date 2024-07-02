@@ -8,7 +8,7 @@ the tests, leading to unstable behavior.
 
 # ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205, D401, S106
 
-from hammett.core import Application
+from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
