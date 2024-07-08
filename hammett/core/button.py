@@ -2,7 +2,7 @@
 
 from typing import TYPE_CHECKING, cast
 
-from telegram import InlineKeyboardButton
+from telegram import InlineKeyboardButton, WebAppInfo
 
 from hammett.core import handlers
 from hammett.core.constants import SourcesTypes
@@ -166,5 +166,11 @@ class Button:
 
         if self.source_type == SourcesTypes.URL_SOURCE_TYPE and isinstance(self.source, str):
             return InlineKeyboardButton(self.caption, url=self.source), visibility
+
+        if self.source_type == SourcesTypes.WEB_APP_SOURCE_TYPE and isinstance(self.source, str):
+            return InlineKeyboardButton(
+                self.caption,
+                web_app=WebAppInfo(url=self.source),
+            ), visibility
 
         raise UnknownSourceType
