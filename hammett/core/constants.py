@@ -26,6 +26,7 @@ class SourcesTypes(Enum):
     SJUMP_SOURCE_TYPE = auto()
     SMOVE_SOURCE_TYPE = auto()
     URL_SOURCE_TYPE = auto()
+    WEB_APP_SOURCE_TYPE = auto()
 
 
 @dataclass
