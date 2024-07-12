@@ -23,12 +23,16 @@ PAYLOAD_NAMESPACE = 'hammett'
 
 PERMISSIONS: list[str] = []
 
-REDIS_PERSISTENCE = {
+REDIS_CONF = {
     'HOST': '127.0.0.1',
     'PORT': 6379,
-    'DB': 0,
     'PASSWORD': None,
     'UNIX_SOCKET_PATH': None,
+}
+
+REDIS_PERSISTENCE = {
+    **REDIS_CONF,
+    'DB': 0,
 }
 
 SAVE_LATEST_MESSAGE = False
