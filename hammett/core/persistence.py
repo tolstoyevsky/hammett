@@ -63,16 +63,14 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
         )
 
         try:
-            self.redis_cli: redis.Redis[Any] = redis.Redis(
-                host=settings.REDIS_PERSISTENCE.get('HOST'),
-                port=settings.REDIS_PERSISTENCE.get('PORT'),
-                db=settings.REDIS_PERSISTENCE['DB'],
-                password=settings.REDIS_PERSISTENCE.get('PASSWORD'),
-                unix_socket_path=settings.REDIS_PERSISTENCE.get('UNIX_SOCKET_PATH'),
-            )
+            settings.REDIS_PERSISTENCE['DB']
         except KeyError as exc:
             msg = f'{exc.args[0]} is missing in the REDIS_PERSISTENCE setting.'
             raise ImproperlyConfigured(msg) from exc
+
+        self.redis_cli: redis.Redis[Any] = redis.Redis(
+            **{key.lower(): val for key, val in settings.REDIS_PERSISTENCE.items()},
+        )
 
         self.bot_data: BD | None = None
         self.callback_data: CDCData | None = None
