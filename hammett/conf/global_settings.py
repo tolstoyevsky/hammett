@@ -30,6 +30,11 @@ REDIS_CONF = {
     'UNIX_SOCKET_PATH': None,
 }
 
+REDIS_CACHE = {
+    **REDIS_CONF,
+    'DB': 1,
+}
+
 REDIS_PERSISTENCE = {
     **REDIS_CONF,
     'DB': 0,
