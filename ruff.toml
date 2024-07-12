@@ -20,6 +20,8 @@ ignore = [
     "PT009",  # pytest-unittest-assertion
     "PT027",  # pytest-unittest-raises-assertion
     "RUF012",  # mutable-class-default
+    "S301",  # 	suspicious-pickle-usage
+    "S403",  # 	suspicious-pickle-import
 ]
 
 [lint.flake8-quotes]
