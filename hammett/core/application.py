@@ -20,6 +20,7 @@ from hammett.core.exceptions import (
 )
 from hammett.core.handlers import calc_checksum, log_unregistered_handler
 from hammett.core.permission import apply_permission_to
+from hammett.error_handler import default_error_handler
 from hammett.types import HandlerAlias, HandlerType, JobConfig
 from hammett.utils.log import configure_logging
 
@@ -133,6 +134,14 @@ class Application:
         error_handlers: 'list[Handler] | None',
     ) -> None:
         """Register the specified error handlers."""
+        from hammett.conf import settings
+
+        if any(settings.ERROR_HANDLER_CONF.values()):
+            if error_handlers:
+                error_handlers.append(default_error_handler)
+            else:
+                error_handlers = [default_error_handler]
+
         if error_handlers:
             for error_handler in error_handlers:
                 self._native_application.add_error_handler(error_handler)  # type: ignore[arg-type]
