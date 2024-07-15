@@ -34,7 +34,7 @@ if TYPE_CHECKING:
 
     from hammett.core.mixins import StartMixin
     from hammett.core.screen import Screen
-    from hammett.types import Handler, NativeStates, State, States
+    from hammett.types import Handler, HandlerAlias, NativeStates, State, States
 
 __all__ = ('Application', )
 
@@ -52,7 +52,7 @@ class Application:
         name: str,
         *,
         entry_point: 'type[StartMixin]',
-        error_handlers: 'list[Handler] | None' = None,
+        error_handlers: 'list[HandlerAlias] | None' = None,
         job_configs: 'list[JobConfig] | None' = None,
         native_states: 'NativeStates | None' = None,
         persistence: 'BasePersistence[UD, CD, BD] | None' = None,
@@ -131,7 +131,7 @@ class Application:
 
     def _register_error_handlers(
         self: 'Self',
-        error_handlers: 'list[Handler] | None',
+        error_handlers: 'list[HandlerAlias] | None',
     ) -> None:
         """Register the specified error handlers."""
         from hammett.conf import settings
@@ -144,7 +144,7 @@ class Application:
 
         if error_handlers:
             for error_handler in error_handlers:
-                self._native_application.add_error_handler(error_handler)  # type: ignore[arg-type]
+                self._native_application.add_error_handler(error_handler)
 
     def _register_jobs(
         self: 'Self',
