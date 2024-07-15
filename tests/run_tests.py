@@ -10,6 +10,7 @@ from tests.test_buttons import ButtonsTests
 from tests.test_hiders_check_mechanism import HidersCheckerTests
 from tests.test_permissions_mechanism import PermissionsTests
 from tests.test_persistence import PersistenceTests
+from tests.test_start_marker import StartMarkerTests
 
 if __name__ == '__main__':
     os.environ.setdefault('HAMMETT_SETTINGS_MODULE', 'tests.settings')
