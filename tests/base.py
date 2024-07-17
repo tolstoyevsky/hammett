@@ -52,7 +52,3 @@ class TestStartScreen(StartMixin):
     """The class implements a start screen for the tests."""
 
     description = 'A test StartScreen description.'
-
-    async def start(self, _update, _context):
-        """Invoked on the /start command."""
-        return
