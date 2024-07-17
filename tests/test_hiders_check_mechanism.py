@@ -5,9 +5,10 @@
 from hammett.conf import settings
 from hammett.core.button import Button
 from hammett.core.constants import SourcesTypes
-from hammett.core.exceptions import ImproperlyConfigured
+from hammett.core.exceptions import HiderIsUnregistered, ImproperlyConfigured
 from hammett.core.hider import (
     ONLY_FOR_ADMIN,
+    ONLY_FOR_BETA_TESTERS,
     ONLY_FOR_MODERATORS,
     Hider,
     HidersChecker,
@@ -18,6 +19,8 @@ from hammett.test.utils import override_settings
 _TEST_BUTTON_NAME = 'Test button'
 
 _TEST_URL = 'https://github.com/cusdeb-com/hammett'
+
+_ONLY_FOR_DEVELOPERS = 10
 
 
 class TestHidersChecker(HidersChecker):
@@ -136,3 +139,42 @@ class HidersCheckerTests(BaseTestCase):
                 hiders=Hider(ONLY_FOR_ADMIN),
                 source_type=SourcesTypes.URL_SOURCE_TYPE,
             )
+
+    @override_settings(HIDERS_CHECKER='test.TestHidersChecker')
+    def test_invalid_importing_hider_checker_path(self):
+        """Test the case when the 'HIDERS_CHECKER' contains
+        an invalid HiderChecker class path.
+        """
+        with self.assertRaises(ImportError):
+            Button(
+                _TEST_BUTTON_NAME,
+                _TEST_URL,
+                hiders=Hider(ONLY_FOR_ADMIN),
+                source_type=SourcesTypes.URL_SOURCE_TYPE,
+            )
+
+    @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker')
+    async def test_creating_button_with_unregistered_hider(self):
+        """Test creating a button with an unregistered hider."""
+        button = Button(
+            _TEST_BUTTON_NAME,
+            _TEST_URL,
+            hiders=Hider(_ONLY_FOR_DEVELOPERS),
+            source_type=SourcesTypes.URL_SOURCE_TYPE,
+        )
+        with self.assertRaises(HiderIsUnregistered):
+            await button.create(self.update, self.context)
+
+    @override_settings(HIDERS_CHECKER='hammett.core.hider.HidersChecker')
+    async def test_visibility_of_button_using_default_hider_checker(self):
+        """Test a visibility of a button using the default 'HidersChecker'."""
+        button = Button(
+            _TEST_BUTTON_NAME,
+            _TEST_URL,
+            hiders=Hider(ONLY_FOR_ADMIN) |
+            Hider(ONLY_FOR_BETA_TESTERS) |
+            Hider(ONLY_FOR_MODERATORS),
+            source_type=SourcesTypes.URL_SOURCE_TYPE,
+        )
+        _, visibility = await button.create(self.update, self.context)
+        self.assertFalse(visibility)
