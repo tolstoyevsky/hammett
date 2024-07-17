@@ -8,6 +8,7 @@ import unittest
 from tests.test_application import ApplicationTests
 from tests.test_buttons import ButtonsTests
 from tests.test_hiders_check_mechanism import HidersCheckerTests
+from tests.test_mixins import MixinTests
 from tests.test_permissions_mechanism import PermissionsTests
 from tests.test_persistence import PersistenceTests
 from tests.test_screens import ScreenTests
