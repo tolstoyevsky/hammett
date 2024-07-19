@@ -47,7 +47,7 @@ class Application:
     - configuring logging.
     """
 
-    def __init__(  # noqa: PLR0913
+    def __init__(
         self: 'Self',
         name: str,
         *,
