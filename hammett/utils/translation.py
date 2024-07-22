@@ -6,7 +6,7 @@ from hammett.conf import settings
 from hammett.core.exceptions import LocalePathIsNotSpecified
 
 
-def gettext(caption: str, lang: str = settings.LANGUAGE_CODE) -> str:
+def gettext(caption: str, language: str = settings.LANGUAGE_CODE) -> str:
     """Return translated text by its caption."""
     if not settings.LOCALE_PATH:
         raise LocalePathIsNotSpecified
@@ -14,7 +14,7 @@ def gettext(caption: str, lang: str = settings.LANGUAGE_CODE) -> str:
     translation = native_gettext.translation(
         settings.DOMAIN,
         localedir=str(settings.LOCALE_PATH),
-        languages=[lang],
+        languages=[language],
         fallback=True,
     )
     translation.install()
