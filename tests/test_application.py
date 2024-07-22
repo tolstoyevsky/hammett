@@ -79,23 +79,6 @@ class TestScreenWithKeyboard(TestScreen):
         ]
 
 
-class TestScreenWithPermissionIgnored(TestScreen):
-    """The class implements the screen to test starting an application with
-    a permission ignored.
-    """
-
-    async def add_default_keyboard(self, _update, _context):
-        """Set up the keyboard for the screen."""
-        return [
-            [
-                Button(
-                    '⬅️ Main Menu', TestStartScreen,
-                    source_type=SourcesTypes.MOVE_SOURCE_TYPE,
-                ),
-            ],
-        ]
-
-
 class ApplicationTests(BaseTestCase):
     """The class implements the tests for the application."""
 
