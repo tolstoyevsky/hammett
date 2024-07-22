@@ -1,6 +1,6 @@
 """The module contains the tests for the hiders mechanism."""
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202, D401
+# ruff: noqa: ANN001, ANN101, ANN201, ANN202
 
 from hammett.conf import settings
 from hammett.core.button import Button
@@ -27,11 +27,11 @@ class TestHidersChecker(HidersChecker):
     """The class implements a hiders checker for the tests."""
 
     def is_admin(self, _update, _context):
-        """A stub hiders checker for the testing purposes."""
+        """Represent a stub hiders checker for the testing purposes."""
         return settings.IS_ADMIN
 
     def is_moderator(self, _update, _context):
-        """A stub hiders checker for the testing purposes."""
+        """Represent a stub hiders checker for the testing purposes."""
         return settings.IS_MODERATOR
 
 
@@ -41,11 +41,11 @@ class TestAsyncHidersChecker(HidersChecker):
     """
 
     async def is_admin(self, _update, _context):
-        """A stub hiders checker for the testing purposes."""
+        """Represent a stub hiders checker for the testing purposes."""
         return settings.IS_ADMIN
 
     async def is_moderator(self, _update, _context):
-        """A stub hiders checker for the testing purposes."""
+        """Represent a stub hiders checker for the testing purposes."""
         return settings.IS_MODERATOR
 
 
@@ -53,9 +53,7 @@ class HidersCheckerTests(BaseTestCase):
     """The class implements the tests for the hiders checker mechanism."""
 
     async def _test_hider(self):
-        """The method is intended to be invoked by other tests that use
-        different hiders checkers.
-        """
+        """Implement a method with common logic shared by some tests here."""
         settings.IS_ADMIN = True
         button = Button(
             _TEST_BUTTON_NAME,

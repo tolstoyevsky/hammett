@@ -1,6 +1,6 @@
 """The module contains the tests for the application."""
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202, D401, RUF029, S106, SLF001
+# ruff: noqa: ANN001, ANN101, ANN201, ANN202, RUF029, S106, SLF001
 
 import logging
 import re
@@ -49,12 +49,12 @@ _TEST_LOGGING = {
 
 
 async def _test_error_handler(_update, _context):
-    """A stub error_handler for the testing purposes."""
+    """Represent a stub error_handler for the testing purposes."""
     return
 
 
 async def _test_job(_context):
-    """A stub job for the testing purposes."""
+    """Represent a stub job for the testing purposes."""
     return DEFAULT_STATE
 
 
@@ -70,7 +70,7 @@ class TestScreenWithKeyboard(TestScreen):
     """The class implements the screen to test starting an application."""
 
     async def add_default_keyboard(self, _update, _context):
-        """Sets up the keyboard for the screen."""
+        """Set up the keyboard for the screen."""
         return [
             [
                 Button('⬅️ Main Menu', TestStartScreen,
@@ -85,7 +85,7 @@ class TestScreenWithPermissionIgnored(TestScreen):
     """
 
     async def add_default_keyboard(self, _update, _context):
-        """Sets up the keyboard for the screen."""
+        """Set up the keyboard for the screen."""
         return [
             [
                 Button(
@@ -101,7 +101,7 @@ class ApplicationTests(BaseTestCase):
 
     @staticmethod
     def _init_application(screens=None) -> 'Application':
-        """Returns an initialized application."""
+        """Return an initialized application."""
         screens = [TestScreenWithKeyboard] if screens is None else screens
 
         return Application(
