@@ -112,30 +112,6 @@ class ApplicationTests(BaseTestCase):
             },
         )
 
-    def test_successful_app_init(self):
-        """Test the case when an application is initialized successfully."""
-        app = self._init_application()
-
-        handlers = app._native_application.handlers[0][0]
-        pattern = calc_checksum('TestScreenWithKeyboard.move')
-
-        self.assertIsInstance(handlers.entry_points[0], CommandHandler)
-        self.assertEqual(handlers.name, _APPLICATION_TEST_NAME)
-        self.assertEqual(
-            # Handlers are registered in alphabetical order,
-            # and the move method comes right after jump.
-            handlers.states[DEFAULT_STATE][1].pattern,
-            re.compile(pattern),
-        )
-
-    @override_settings(TOKEN='')
-    def test_unsuccessful_app_init_with_empty_token(self):
-        """Test the case when an application is initialized unsuccessfully
-        because of an empty token.
-        """
-        with self.assertRaises(TokenIsNotSpecified):
-            self._init_application()
-
     @override_settings(LOGGING=_TEST_LOGGING, TOKEN='secret-token')
     def test_app_init_with_logging_setup(self):
         """Test the case when an application is initialized with
@@ -212,6 +188,22 @@ class ApplicationTests(BaseTestCase):
                 }],
             )
 
+    def test_successful_app_init(self):
+        """Test the case when an application is initialized successfully."""
+        app = self._init_application()
+
+        handlers = app._native_application.handlers[0][0]
+        pattern = calc_checksum('TestScreenWithKeyboard.move')
+
+        self.assertIsInstance(handlers.entry_points[0], CommandHandler)
+        self.assertEqual(handlers.name, _APPLICATION_TEST_NAME)
+        self.assertEqual(
+            # Handlers are registered in alphabetical order,
+            # and the move method comes right after jump.
+            handlers.states[DEFAULT_STATE][1].pattern,
+            re.compile(pattern),
+        )
+
     def test_successful_registering_error_handler(self):
         """Test successful registering of `error_handler`."""
         application = Application(
@@ -252,3 +244,11 @@ class ApplicationTests(BaseTestCase):
 
         smove_callback = application._native_states[DEFAULT_STATE][3].callback
         self.assertEqual(smove_callback, TestRouteScreen().smove)
+
+    @override_settings(TOKEN='')
+    def test_unsuccessful_app_init_with_empty_token(self):
+        """Test the case when an application is initialized unsuccessfully
+        because of an empty token.
+        """
+        with self.assertRaises(TokenIsNotSpecified):
+            self._init_application()
