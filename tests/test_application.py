@@ -96,7 +96,7 @@ class ApplicationTests(BaseTestCase):
         )
 
     @override_settings(LOGGING=_TEST_LOGGING, TOKEN='secret-token')
-    def test_app_init_with_logging_setup(self):
+    def test_application_initialization_with_logging_setup(self):
         """Test the case when an application is initialized with
         an overriden LOGGING setting.
         """
@@ -171,11 +171,11 @@ class ApplicationTests(BaseTestCase):
                 }],
             )
 
-    def test_successful_app_init(self):
+    def test_successful_application_initialization(self):
         """Test the case when an application is initialized successfully."""
-        app = self._init_application()
+        application = self._init_application()
 
-        handlers = app._native_application.handlers[0][0]
+        handlers = application._native_application.handlers[0][0]
         pattern = calc_checksum('TestScreenWithKeyboard.move')
 
         self.assertIsInstance(handlers.entry_points[0], CommandHandler)
@@ -229,7 +229,7 @@ class ApplicationTests(BaseTestCase):
         self.assertEqual(smove_callback, TestRouteScreen().smove)
 
     @override_settings(TOKEN='')
-    def test_unsuccessful_app_init_with_empty_token(self):
+    def test_unsuccessful_application_initialization_with_empty_token(self):
         """Test the case when an application is initialized unsuccessfully
         because of an empty token.
         """
