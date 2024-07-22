@@ -75,7 +75,7 @@ class HidersCheckerTests(BaseTestCase):
         self.assertFalse(visibility)
 
     def test_empty_setting(self):
-        """Tests the case when a button uses the hiders mechanism,
+        """Test the case when a button uses the hiders mechanism,
         but the 'HIDERS_CHECKER' setting is empty.
         """
         with self.assertRaises(ImproperlyConfigured):
@@ -102,7 +102,7 @@ class HidersCheckerTests(BaseTestCase):
 
     @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker')
     async def test_hiders_chain(self):
-        """Tests the case when hiders are combined using the OR operator."""
+        """Test the case when hiders are combined using the OR operator."""
         settings.IS_ADMIN = False
         settings.IS_MODERATOR = True
         button = Button(
@@ -127,7 +127,7 @@ class HidersCheckerTests(BaseTestCase):
 
     @override_settings(HIDERS_CHECKER='test')
     def test_invalid_import(self):
-        """Tests the case when the 'HIDERS_CHECKER' contains
+        """Test the case when the 'HIDERS_CHECKER' contains
         an invalid module path.
         """
         with self.assertRaises(ImportError):

@@ -113,7 +113,7 @@ class ApplicationTests(BaseTestCase):
         )
 
     def test_successful_app_init(self):
-        """Tests the case when an application is initialized successfully."""
+        """Test the case when an application is initialized successfully."""
         app = self._init_application()
 
         handlers = app._native_application.handlers[0][0]
@@ -130,7 +130,7 @@ class ApplicationTests(BaseTestCase):
 
     @override_settings(TOKEN='')
     def test_unsuccessful_app_init_with_empty_token(self):
-        """Tests the case when an application is initialized unsuccessfully
+        """Test the case when an application is initialized unsuccessfully
         because of an empty token.
         """
         with self.assertRaises(TokenIsNotSpecified):
@@ -138,7 +138,7 @@ class ApplicationTests(BaseTestCase):
 
     @override_settings(LOGGING=_TEST_LOGGING, TOKEN='secret-token')
     def test_app_init_with_logging_setup(self):
-        """Tests the case when an application is initialized with
+        """Test the case when an application is initialized with
         an overriden LOGGING setting.
         """
         self._init_application()

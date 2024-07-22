@@ -21,7 +21,7 @@ class ButtonsTests(BaseTestCase):
     """The class implements the tests for buttons."""
 
     async def test_non_callable_source_as_handler(self):
-        """Tests the case when a button handler is not callable."""
+        """Test the case when a button handler is not callable."""
         with self.assertRaises(TypeError):
             Button(
                 'Test',
@@ -30,7 +30,7 @@ class ButtonsTests(BaseTestCase):
             )
 
     async def test_unknown_source_type(self):
-        """Tests the case when an unknown source type passed."""
+        """Test the case when an unknown source type passed."""
         with self.assertRaises(UnknownSourceType):
             button = Button(
                 'Test',
@@ -40,7 +40,7 @@ class ButtonsTests(BaseTestCase):
             await button.create(self.update, self.context)
 
     async def test_using_random_class_instead_of_screen_for_move(self):
-        """Tests the case when the source type is `MOVE_SOURCE_TYPE` but
+        """Test the case when the source type is `MOVE_SOURCE_TYPE` but
         the source isn't a subclass of Screen.
         """
         with self.assertRaises(TypeError):
