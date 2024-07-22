@@ -6,7 +6,7 @@ a singleton, and when wrapping all its handlers, they share their state between
 the tests, leading to unstable behavior.
 """
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205, D401, S106
+# ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205, S106
 
 from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
@@ -30,7 +30,7 @@ class TestPermissionWithSyncChecker(BaseTestPermission):
     """The class implements a permission where `has_permission` method is sync."""
 
     def has_permission(self, _update, _context):
-        """A stub permission checker for the testing purpose."""
+        """Represent a stub permission checker for the testing purpose."""
         return False
 
 
@@ -44,7 +44,7 @@ class PermissionWithoutHasPermissionMethod(Permission):
     """
 
     async def handle_permission_denied(self, _update, _context):
-        """A stub handler for the testing purposes."""
+        """Represent a stub handler for the testing purposes."""
         return PERMISSION_DENIED_STATE
 
 
@@ -54,7 +54,7 @@ class PermissionWithoutHandlePermissionDeniedMethod(Permission):
     """
 
     def has_permission(self, _update, _context):
-        """A stub permission checker for the testing purposes."""
+        """Represent a stub permission checker for the testing purposes."""
         return False
 
 
@@ -67,7 +67,7 @@ class PermissionsTests(BaseTestCase):
 
     @staticmethod
     def _init_application(screens=None):
-        """Returns an initialized application."""
+        """Return an initialized application."""
         Application(
             _APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
@@ -87,7 +87,7 @@ class PermissionsTests(BaseTestCase):
 
             @register_button_handler
             async def handler(self, _update, _context):
-                """A stub handler for the testing purposes."""
+                """Represent a stub handler for the testing purposes."""
                 return DEFAULT_STATE
 
         self._init_application([ScreenWithHandler])
@@ -106,7 +106,7 @@ class PermissionsTests(BaseTestCase):
             description = 'A test StartScreen description.'
 
             async def start(self, _update, _context):
-                """Invoked on the /start command."""
+                """Invoke on the /start command."""
                 return
 
         self._init_application([TestStartScreen])
@@ -200,7 +200,7 @@ class PermissionsTests(BaseTestCase):
             @ignore_permissions([TestDenyingPermission])
             @register_button_handler
             async def handler(self, _update, _context):
-                """A handler which ignores TestDenyingPermission permission."""
+                """Represent a handler which ignores TestDenyingPermission permission."""
                 return DEFAULT_STATE
 
         self._init_application([ScreenWithIgnorePermissionHandler])
@@ -226,7 +226,7 @@ class PermissionsTests(BaseTestCase):
             @ignore_permissions([TestDenyingPermission])
             @register_button_handler
             async def handler(self, _update, _context):
-                """A handler which ignores TestDenyingPermission permission."""
+                """Represent a handler which ignores TestDenyingPermission permission."""
                 return DEFAULT_STATE
 
         self._init_application([ScreenWithIgnorePermissionHandler])

@@ -1,6 +1,6 @@
 """The module contains the tests for the handlers."""
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205, D401
+# ruff: noqa: ANN001, ANN101, ANN201, ANN202, ANN205
 
 from typing import TYPE_CHECKING, cast
 
@@ -29,7 +29,7 @@ class TestScreenWithHandler(Screen):
 
     @register_button_handler
     async def handler(self, _update, _context):
-        """A stub handler for the testing purposes."""
+        """Represent a stub handler for the testing purposes."""
         return DEFAULT_STATE
 
 
@@ -39,7 +39,7 @@ class TestScreenWithStaticHandler(Screen):
     @staticmethod
     @register_button_handler
     async def handler(_update, _context):
-        """A stub handler for the testing purposes."""
+        """Represent a stub handler for the testing purposes."""
         return DEFAULT_STATE
 
 
@@ -76,7 +76,7 @@ class HandlersTests(BaseTestCase):
 
                 @register_command_handler('')
                 async def handler(self, _update, _context):
-                    """A stub handler for the testing purposes."""
+                    """Represent a stub handler for the testing purposes."""
                     return DEFAULT_STATE
 
     def test_passing_unsupported_type_to_calc_checksum(self):
