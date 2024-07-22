@@ -119,11 +119,7 @@ class ApplicationTests(BaseTestCase):
 
     def test_application_initialization_without_persistence_specified(self):
         """Test an application initialization without a persistence specified."""
-        application = Application(
-            _APPLICATION_TEST_NAME,
-            entry_point=TestStartScreen,
-        )
-
+        application = self._init_application()
         self.assertIsNone(application._native_application.persistence)
 
     @override_settings(ERROR_HANDLER_CONF={'IGNORE_TIMED_OUT': True}, TOKEN='secret-token')
