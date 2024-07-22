@@ -78,7 +78,7 @@ class PermissionsTests(BaseTestCase):
 
     @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_wrapping_handler_with_permission_specified(self):
-        """Tests the case when a handler is wrapped with a permission."""
+        """Test the case when a handler is wrapped with a permission."""
 
         class ScreenWithHandler(Screen):
             """The class implements a screen with a handler."""
@@ -98,7 +98,7 @@ class PermissionsTests(BaseTestCase):
 
     @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_wrapping_start_method_with_permission_specified(self):
-        """Tests the case when the start method is wrapped with a permission."""
+        """Test the case when the start method is wrapped with a permission."""
 
         class TestStartScreen(StartMixin):
             """The class implements a start screen for this test."""
@@ -120,7 +120,7 @@ class PermissionsTests(BaseTestCase):
         'tests.test_permissions_mechanism.SubPermission',
     ], TOKEN='secret-token')
     async def test_execution_order_of_permissions(self):
-        """Tests the scenario with multiple permission classes where
+        """Test the scenario with multiple permission classes where
         strict execution order is required.
         """
 
@@ -141,7 +141,7 @@ class PermissionsTests(BaseTestCase):
 
     @override_settings(PERMISSIONS=['tests.base.TestGivingPermission'], TOKEN='secret-token')
     async def test_giving_permission(self):
-        """Tests the case when the permission is giving."""
+        """Test the case when the permission is giving."""
 
         class TestScreen(Screen):
             """The class implements a screen for this test."""
@@ -156,7 +156,7 @@ class PermissionsTests(BaseTestCase):
 
     @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_denying_permission(self):
-        """Tests the case when the permission is denied."""
+        """Test the case when the permission is denied."""
 
         class TestScreen(Screen):
             """The class implements a screen for this test."""
@@ -173,7 +173,7 @@ class PermissionsTests(BaseTestCase):
         'tests.test_permissions_mechanism.TestPermissionWithSyncChecker',
     ], TOKEN='secret-token')
     async def test_sync_permission_denied(self):
-        """Tests the case when the permission checker is a synchronous."""
+        """Test the case when the permission checker is a synchronous."""
 
         class TestScreen(Screen):
             """The class implements a screen for this test."""
@@ -188,7 +188,7 @@ class PermissionsTests(BaseTestCase):
 
     @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_ignoring_one_permission(self):
-        """Tests the case when one permission is ignored."""
+        """Test the case when one permission is ignored."""
 
         class ScreenWithIgnorePermissionHandler(Screen):
             """The class implements a screen with a handler that ignores
@@ -214,7 +214,7 @@ class PermissionsTests(BaseTestCase):
         'tests.base.TestDenyingPermission',
     ], TOKEN='secret-token')
     async def test_ignoring_second_permission(self):
-        """Tests the case when the second permission is ignored."""
+        """Test the case when the second permission is ignored."""
 
         class ScreenWithIgnorePermissionHandler(Screen):
             """The class implements a screen with a handler that ignores
@@ -239,7 +239,7 @@ class PermissionsTests(BaseTestCase):
         'tests.test_permissions_mechanism.PermissionWithoutHasPermissionMethod',
     ], TOKEN='secret-token')
     async def test_has_permission_method_is_not_implemented(self):
-        """Tests the case when the has_permission method is not implemented."""
+        """Test the case when the has_permission method is not implemented."""
 
         class TestScreen(Screen):
             """The class implements a screen for this test."""
@@ -256,7 +256,7 @@ class PermissionsTests(BaseTestCase):
         'tests.test_permissions_mechanism.PermissionWithoutHandlePermissionDeniedMethod',
     ], TOKEN='secret-token')
     async def test_handle_permission_denied_method_is_not_implemented(self):
-        """Tests the case when the handle_permission_denied method is not implemented."""
+        """Test the case when the handle_permission_denied method is not implemented."""
 
         class TestScreen(Screen):
             """The class implements a screen for this test."""
