@@ -9,6 +9,21 @@ Hammett is a framework whose main goal is to simplify building *commercial* Tele
     <img src="/logo/1633x1380.png" alt="Hammett" style="max-width: 100%; width: 500px">
 </p>
 
+## Tests
+
+To run the tests use the following command:
+
+```bash
+env PYTHONPATH=$(pwd) python3 tests/run_tests.py
+```
+
+You can also run the tests with coverage, using the following command:
+
+```bash
+env PYTHONPATH=$(pwd) HAMMETT_SETTINGS_MODULE=tests.settings coverage run -m unittest discover
+coverage report
+```
+
 ## Authors
 
 See [AUTHORS](AUTHORS.md).
