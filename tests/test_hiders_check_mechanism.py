@@ -74,6 +74,25 @@ class HidersCheckerTests(BaseTestCase):
         _, visibility = await button.create(self.update, self.context)
         self.assertFalse(visibility)
 
+    @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestAsyncHidersChecker')
+    async def test_async_hider(self):
+        """Test the case when an asynchronous hider is used to control
+        a button visibility.
+        """
+        await self._test_hider()
+
+    @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker')
+    async def test_creating_button_with_unregistered_hider(self):
+        """Test creating a button with an unregistered hider."""
+        button = Button(
+            _TEST_BUTTON_NAME,
+            _TEST_URL,
+            hiders=Hider(_ONLY_FOR_DEVELOPERS),
+            source_type=SourcesTypes.URL_SOURCE_TYPE,
+        )
+        with self.assertRaises(HiderIsUnregistered):
+            await button.create(self.update, self.context)
+
     def test_empty_setting(self):
         """Test the case when a button uses the hiders mechanism,
         but the 'HIDERS_CHECKER' setting is empty.
@@ -85,13 +104,6 @@ class HidersCheckerTests(BaseTestCase):
                 hiders=Hider(ONLY_FOR_ADMIN),
                 source_type=SourcesTypes.URL_SOURCE_TYPE,
             )
-
-    @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestAsyncHidersChecker')
-    async def test_async_hider(self):
-        """Test the case when an asynchronous hider is used to control
-        a button visibility.
-        """
-        await self._test_hider()
 
     @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker')
     async def test_hider(self):
@@ -150,18 +162,6 @@ class HidersCheckerTests(BaseTestCase):
                 hiders=Hider(ONLY_FOR_ADMIN),
                 source_type=SourcesTypes.URL_SOURCE_TYPE,
             )
-
-    @override_settings(HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker')
-    async def test_creating_button_with_unregistered_hider(self):
-        """Test creating a button with an unregistered hider."""
-        button = Button(
-            _TEST_BUTTON_NAME,
-            _TEST_URL,
-            hiders=Hider(_ONLY_FOR_DEVELOPERS),
-            source_type=SourcesTypes.URL_SOURCE_TYPE,
-        )
-        with self.assertRaises(HiderIsUnregistered):
-            await button.create(self.update, self.context)
 
     @override_settings(HIDERS_CHECKER='hammett.core.hider.HidersChecker')
     async def test_visibility_of_button_using_default_hider_checker(self):
