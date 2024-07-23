@@ -235,10 +235,6 @@ class PermissionsTests(BaseTestCase):
         class TestStartScreen(BaseTestScreenWithDescription, StartMixin):
             """The class implements a start screen for this test."""
 
-            async def start(self, _update, _context):
-                """Invoke on the /start command."""
-                return
-
         self._init_application([TestStartScreen])
         screen = TestStartScreen()
 
