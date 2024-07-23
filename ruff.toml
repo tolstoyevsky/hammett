@@ -27,5 +27,8 @@ ignore = [
 [lint.flake8-quotes]
 inline-quotes = "single"
 
+[lint.per-file-ignores]
+"tests/*" = ["ANN"]
+
 [lint.pylint]
 max-args = 7

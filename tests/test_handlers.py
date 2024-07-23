@@ -1,7 +1,5 @@
 """The module contains the tests for the handlers."""
 
-# ruff: noqa: ANN001, ANN201, ANN202, ANN205
-
 from typing import TYPE_CHECKING, cast
 
 from hammett.core.constants import DEFAULT_STATE

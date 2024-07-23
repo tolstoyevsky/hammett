@@ -1,6 +1,6 @@
 """The module contains the tests for the application."""
 
-# ruff: noqa: ANN001, ANN201, ANN202, RUF029, S106, SLF001
+# ruff: noqa: RUF029, S106, SLF001
 
 import logging
 import re

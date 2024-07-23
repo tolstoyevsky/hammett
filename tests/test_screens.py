@@ -1,7 +1,5 @@
 """The module contains the tests for the screens."""
 
-# ruff: noqa: ANN201
-
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.exceptions import ScreenDescriptionIsEmpty
 from hammett.core.screen import Screen

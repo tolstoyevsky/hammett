@@ -1,7 +1,5 @@
 """The module contains the tests for buttons."""
 
-# ruff: noqa: ANN201
-
 from hammett.core.button import Button
 from hammett.core.constants import SourcesTypes
 from hammett.core.exceptions import UnknownSourceType

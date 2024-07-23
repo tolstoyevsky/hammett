@@ -1,7 +1,5 @@
 """The module contains the tests for the StartMarker."""
 
-# ruff: noqa: ANN201
-
 from hammett.start_marker import StartMarker
 from hammett.test.base import BaseTestCase
 
