@@ -1,7 +1,5 @@
 """The module contains the tests for the mixins."""
 
-# ruff: noqa: ANN201
-
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.exceptions import ScreenRouteIsEmpty
 from hammett.core.mixins import RouteMixin

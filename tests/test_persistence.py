@@ -1,6 +1,6 @@
 """The module contains the tests for the persistence."""
 
-# ruff: noqa: ANN201, SLF001
+# ruff: noqa: SLF001
 
 import json
 from pathlib import Path

@@ -6,7 +6,7 @@ a singleton, and when wrapping all its handlers, they share their state between
 the tests, leading to unstable behavior.
 """
 
-# ruff: noqa: ANN001, ANN201, ANN202, ANN205, S106
+# ruff: noqa: S106
 
 from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE

@@ -1,7 +1,5 @@
 """The module contains the classes for the Hammett tests."""
 
-# ruff: noqa: ANN001, ANN101, ANN201, ANN202
-
 from abc import ABC
 
 from hammett.core.mixins import StartMixin
