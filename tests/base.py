@@ -8,6 +8,8 @@ from hammett.core.mixins import StartMixin
 from hammett.core.permission import Permission
 from hammett.core.screen import Screen
 
+APPLICATION_TEST_NAME = 'test'
+
 PERMISSION_DENIED_STATE = '1'
 
 PERMISSIONS_ORDER = []

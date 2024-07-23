@@ -17,9 +17,12 @@ from hammett.core.persistence import RedisPersistence
 from hammett.error_handler import default_error_handler
 from hammett.test.base import BaseTestCase
 from hammett.test.utils import override_settings
-from tests.base import BaseTestScreenWithDescription, TestScreen, TestStartScreen
-
-_APPLICATION_TEST_NAME = 'test'
+from tests.base import (
+    APPLICATION_TEST_NAME,
+    BaseTestScreenWithDescription,
+    TestScreen,
+    TestStartScreen,
+)
 
 _NEW_STATE = '1'
 
@@ -88,7 +91,7 @@ class ApplicationTests(BaseTestCase):
         screens = [TestScreenWithKeyboard] if screens is None else screens
 
         return Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             states={
                 DEFAULT_STATE: screens,
@@ -109,7 +112,7 @@ class ApplicationTests(BaseTestCase):
     def test_application_initialization_with_persistence_specified(self):
         """Test an application initialization with a persistence specified."""
         application = Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             persistence=RedisPersistence(),
         )
@@ -128,7 +131,7 @@ class ApplicationTests(BaseTestCase):
         including the registering order.
         """
         application = Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             error_handlers=[_test_error_handler],
         )
@@ -149,7 +152,7 @@ class ApplicationTests(BaseTestCase):
         """Test registering a job without `callback` key specified."""
         with self.assertRaises(CallbackNotProvided):
             Application(
-                _APPLICATION_TEST_NAME,
+                APPLICATION_TEST_NAME,
                 entry_point=TestStartScreen,
                 job_configs=[{
                     'job_kwargs': {'trigger': 'interval'},
@@ -160,7 +163,7 @@ class ApplicationTests(BaseTestCase):
         """Test registering a job without `job_kwargs` key specified."""
         with self.assertRaises(JobKwargsNotProvided):
             Application(
-                _APPLICATION_TEST_NAME,
+                APPLICATION_TEST_NAME,
                 entry_point=TestStartScreen,
                 job_configs=[{
                     'callback': _test_job,
@@ -175,7 +178,7 @@ class ApplicationTests(BaseTestCase):
         pattern = calc_checksum('TestScreenWithKeyboard.move')
 
         self.assertIsInstance(handlers.entry_points[0], CommandHandler)
-        self.assertEqual(handlers.name, _APPLICATION_TEST_NAME)
+        self.assertEqual(handlers.name, APPLICATION_TEST_NAME)
         self.assertEqual(
             # Handlers are registered in alphabetical order,
             # and the move method comes right after jump.
@@ -186,7 +189,7 @@ class ApplicationTests(BaseTestCase):
     def test_successful_registering_error_handler(self):
         """Test successful registering of `error_handler`."""
         application = Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             error_handlers=[_test_error_handler],
         )
@@ -197,7 +200,7 @@ class ApplicationTests(BaseTestCase):
     def test_successful_registering_job(self):
         """Test successful registering of a job."""
         application = Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             job_configs=[{
                 'callback': _test_job,
@@ -210,7 +213,7 @@ class ApplicationTests(BaseTestCase):
     def test_registering_route_handlers(self):
         """Test registering route handlers."""
         application = Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             states={
                 DEFAULT_STATE: {TestScreen},
