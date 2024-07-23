@@ -2,6 +2,7 @@
 
 from abc import ABC
 
+from hammett.core import Application
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
@@ -65,3 +66,16 @@ class TestScreen(BaseTestScreenWithDescription):
 
 class TestStartScreen(BaseTestScreenWithDescription, StartMixin):
     """The class implements a start screen for the tests."""
+
+
+def get_application(screens=None):
+    """Return an initialized application."""
+    screens = [TestScreen] if screens is None else screens
+
+    return Application(
+        APPLICATION_TEST_NAME,
+        entry_point=TestStartScreen,
+        states={
+            DEFAULT_STATE: screens,
+        },
+    )

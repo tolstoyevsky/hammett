@@ -8,7 +8,6 @@ the tests, leading to unstable behavior.
 
 # ruff: noqa: S106
 
-from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
@@ -22,9 +21,8 @@ from tests.base import (
     BaseTestScreenWithDescription,
     BaseTestScreenWithHandler,
     TestDenyingPermission,
-    TestStartScreen,
+    get_application,
 )
-from tests.test_application import APPLICATION_TEST_NAME
 
 
 class MainPermission(BaseTestPermission):
@@ -66,17 +64,6 @@ class TestPermissionWithSyncChecker(BaseTestPermission):
 class PermissionsTests(BaseTestCase):
     """The class implements the tests for the permissions mechanism."""
 
-    @staticmethod
-    def _init_application(screens=None):
-        """Return an initialized application."""
-        Application(
-            APPLICATION_TEST_NAME,
-            entry_point=TestStartScreen,
-            states={
-                DEFAULT_STATE: screens,
-            },
-        )
-
     @override_settings(PERMISSIONS=['tests.base.TestDenyingPermission'], TOKEN='secret-token')
     async def test_denying_permission(self):
         """Test the case when the permission is denied."""
@@ -84,7 +71,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         state = await screen.move(self.update, self.context)
@@ -102,7 +89,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         await screen.move(self.update, self.context)
@@ -119,7 +106,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         state = await screen.move(self.update, self.context)
@@ -134,7 +121,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         with self.assertRaises(NotImplementedError):
@@ -149,7 +136,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         with self.assertRaises(NotImplementedError):
@@ -170,7 +157,7 @@ class PermissionsTests(BaseTestCase):
                 """Represent a handler which ignores TestDenyingPermission permission."""
                 return DEFAULT_STATE
 
-        self._init_application([ScreenWithIgnorePermissionHandler])
+        get_application([ScreenWithIgnorePermissionHandler])
         screen = ScreenWithIgnorePermissionHandler()
 
         state = await screen.handler(self.update, self.context)
@@ -194,7 +181,7 @@ class PermissionsTests(BaseTestCase):
                 """Represent a handler which ignores TestDenyingPermission permission."""
                 return DEFAULT_STATE
 
-        self._init_application([ScreenWithIgnorePermissionHandler])
+        get_application([ScreenWithIgnorePermissionHandler])
         screen = ScreenWithIgnorePermissionHandler()
 
         state = await screen.handler(self.update, self.context)
@@ -209,7 +196,7 @@ class PermissionsTests(BaseTestCase):
         class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
 
-        self._init_application([TestScreen])
+        get_application([TestScreen])
         screen = TestScreen()
 
         state = await screen.move(self.update, self.context)
@@ -222,7 +209,7 @@ class PermissionsTests(BaseTestCase):
         class ScreenWithHandler(BaseTestScreenWithDescription, BaseTestScreenWithHandler):
             """The class implements a screen with a handler."""
 
-        self._init_application([ScreenWithHandler])
+        get_application([ScreenWithHandler])
         screen = ScreenWithHandler()
 
         state = await screen.handler(self.update, self.context)
@@ -235,7 +222,7 @@ class PermissionsTests(BaseTestCase):
         class TestStartScreen(BaseTestScreenWithDescription, StartMixin):
             """The class implements a start screen for this test."""
 
-        self._init_application([TestStartScreen])
+        get_application([TestStartScreen])
         screen = TestStartScreen()
 
         state = await screen.start(self.update, self.context)

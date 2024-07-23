@@ -22,6 +22,7 @@ from tests.base import (
     BaseTestScreenWithDescription,
     TestScreen,
     TestStartScreen,
+    get_application,
 )
 
 _NEW_STATE = '1'
@@ -85,25 +86,12 @@ class TestScreenWithKeyboard(BaseTestScreenWithDescription):
 class ApplicationTests(BaseTestCase):
     """The class implements the tests for the application."""
 
-    @staticmethod
-    def _init_application(screens=None) -> 'Application':
-        """Return an initialized application."""
-        screens = [TestScreenWithKeyboard] if screens is None else screens
-
-        return Application(
-            APPLICATION_TEST_NAME,
-            entry_point=TestStartScreen,
-            states={
-                DEFAULT_STATE: screens,
-            },
-        )
-
     @override_settings(LOGGING=_TEST_LOGGING, TOKEN='secret-token')
     def test_application_initialization_with_logging_setup(self):
         """Test the case when an application is initialized with
         an overriden LOGGING setting.
         """
-        self._init_application()
+        get_application()
         self.assertEqual(
             logging.root.manager.loggerDict['hammett_test'].getEffectiveLevel(),
             logging.INFO,
@@ -122,7 +110,7 @@ class ApplicationTests(BaseTestCase):
 
     def test_application_initialization_without_persistence_specified(self):
         """Test an application initialization without a persistence specified."""
-        application = self._init_application()
+        application = get_application()
         self.assertIsNone(application._native_application.persistence)
 
     @override_settings(ERROR_HANDLER_CONF={'IGNORE_TIMED_OUT': True}, TOKEN='secret-token')
@@ -143,7 +131,7 @@ class ApplicationTests(BaseTestCase):
     @override_settings(ERROR_HANDLER_CONF={'IGNORE_TIMED_OUT': True}, TOKEN='secret-token')
     def test_registering_default_error_handler_only(self):
         """Test registering `default_error_handler` only."""
-        application = self._init_application()
+        application = get_application()
         registered_error_handler = next(iter(application._native_application.error_handlers))
 
         self.assertEqual(registered_error_handler, default_error_handler)
@@ -172,7 +160,7 @@ class ApplicationTests(BaseTestCase):
 
     def test_successful_application_initialization(self):
         """Test the case when an application is initialized successfully."""
-        application = self._init_application()
+        application = get_application([TestScreenWithKeyboard])
 
         handlers = application._native_application.handlers[0][0]
         pattern = calc_checksum('TestScreenWithKeyboard.move')
@@ -233,4 +221,4 @@ class ApplicationTests(BaseTestCase):
         because of an empty token.
         """
         with self.assertRaises(TokenIsNotSpecified):
-            self._init_application()
+            get_application()
