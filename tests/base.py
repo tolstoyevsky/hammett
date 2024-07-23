@@ -2,6 +2,8 @@
 
 from abc import ABC
 
+from hammett.core.constants import DEFAULT_STATE
+from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
 from hammett.core.permission import Permission
 from hammett.core.screen import Screen
@@ -28,6 +30,15 @@ class BaseTestScreenWithDescription(Screen):
     """The class represents the base screen for the testing purposes."""
 
     description = 'Test description'
+
+
+class BaseTestScreenWithHandler(Screen):
+    """The class represents the base screen for the testing purposes."""
+
+    @register_button_handler
+    async def handler(self, _update, _context):
+        """Represent a stub handler for the testing purposes."""
+        return DEFAULT_STATE
 
 
 class TestDenyingPermission(BaseTestPermission):

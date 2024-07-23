@@ -20,6 +20,7 @@ from tests.base import (
     PERMISSIONS_ORDER,
     BaseTestPermission,
     BaseTestScreenWithDescription,
+    BaseTestScreenWithHandler,
     TestDenyingPermission,
     TestStartScreen,
 )
@@ -218,13 +219,8 @@ class PermissionsTests(BaseTestCase):
     async def test_wrapping_handler_with_permission_specified(self):
         """Test the case when a handler is wrapped with a permission."""
 
-        class ScreenWithHandler(BaseTestScreenWithDescription):
+        class ScreenWithHandler(BaseTestScreenWithDescription, BaseTestScreenWithHandler):
             """The class implements a screen with a handler."""
-
-            @register_button_handler
-            async def handler(self, _update, _context):
-                """Represent a stub handler for the testing purposes."""
-                return DEFAULT_STATE
 
         self._init_application([ScreenWithHandler])
         screen = ScreenWithHandler()
