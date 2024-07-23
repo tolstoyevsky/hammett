@@ -13,13 +13,13 @@ from hammett.core.constants import DEFAULT_STATE
 from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
 from hammett.core.permission import Permission, ignore_permissions
-from hammett.core.screen import Screen
 from hammett.test.base import BaseTestCase
 from hammett.test.utils import override_settings
 from tests.base import (
     PERMISSION_DENIED_STATE,
     PERMISSIONS_ORDER,
     BaseTestPermission,
+    BaseTestScreenWithDescription,
     TestDenyingPermission,
     TestStartScreen,
 )
@@ -80,10 +80,8 @@ class PermissionsTests(BaseTestCase):
     async def test_denying_permission(self):
         """Test the case when the permission is denied."""
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -100,10 +98,8 @@ class PermissionsTests(BaseTestCase):
         strict execution order is required.
         """
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -119,10 +115,8 @@ class PermissionsTests(BaseTestCase):
     async def test_giving_permission(self):
         """Test the case when the permission is giving."""
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -136,10 +130,8 @@ class PermissionsTests(BaseTestCase):
     async def test_handle_permission_denied_method_is_not_implemented(self):
         """Test the case when the handle_permission_denied method is not implemented."""
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -153,10 +145,8 @@ class PermissionsTests(BaseTestCase):
     async def test_has_permission_method_is_not_implemented(self):
         """Test the case when the has_permission method is not implemented."""
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -168,12 +158,10 @@ class PermissionsTests(BaseTestCase):
     async def test_ignoring_one_permission(self):
         """Test the case when one permission is ignored."""
 
-        class ScreenWithIgnorePermissionHandler(Screen):
+        class ScreenWithIgnorePermissionHandler(BaseTestScreenWithDescription):
             """The class implements a screen with a handler that ignores
             the TestDenyingPermission permission.
             """
-
-            description = 'Test description'
 
             @ignore_permissions([TestDenyingPermission])
             @register_button_handler
@@ -194,12 +182,10 @@ class PermissionsTests(BaseTestCase):
     async def test_ignoring_second_permission(self):
         """Test the case when the second permission is ignored."""
 
-        class ScreenWithIgnorePermissionHandler(Screen):
+        class ScreenWithIgnorePermissionHandler(BaseTestScreenWithDescription):
             """The class implements a screen with a handler that ignores
             the TestDenyingPermission permission.
             """
-
-            description = 'Test description'
 
             @ignore_permissions([TestDenyingPermission])
             @register_button_handler
@@ -219,10 +205,8 @@ class PermissionsTests(BaseTestCase):
     async def test_sync_permission_denied(self):
         """Test the case when the permission checker is a synchronous."""
 
-        class TestScreen(Screen):
+        class TestScreen(BaseTestScreenWithDescription):
             """The class implements a screen for this test."""
-
-            description = 'A test description.'
 
         self._init_application([TestScreen])
         screen = TestScreen()
@@ -234,10 +218,8 @@ class PermissionsTests(BaseTestCase):
     async def test_wrapping_handler_with_permission_specified(self):
         """Test the case when a handler is wrapped with a permission."""
 
-        class ScreenWithHandler(Screen):
+        class ScreenWithHandler(BaseTestScreenWithDescription):
             """The class implements a screen with a handler."""
-
-            description = 'Test description'
 
             @register_button_handler
             async def handler(self, _update, _context):
@@ -254,10 +236,8 @@ class PermissionsTests(BaseTestCase):
     async def test_wrapping_start_method_with_permission_specified(self):
         """Test the case when the start method is wrapped with a permission."""
 
-        class TestStartScreen(StartMixin):
+        class TestStartScreen(BaseTestScreenWithDescription, StartMixin):
             """The class implements a start screen for this test."""
-
-            description = 'A test StartScreen description.'
 
             async def start(self, _update, _context):
                 """Invoke on the /start command."""

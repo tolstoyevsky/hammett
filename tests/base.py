@@ -24,6 +24,12 @@ class BaseTestPermission(Permission, ABC):
         return PERMISSION_DENIED_STATE
 
 
+class BaseTestScreenWithDescription(Screen):
+    """The class represents the base screen for the testing purposes."""
+
+    description = 'Test description'
+
+
 class TestDenyingPermission(BaseTestPermission):
     """The class implements a permission that can never be given."""
 
@@ -40,13 +46,9 @@ class TestGivingPermission(BaseTestPermission):
         return True
 
 
-class TestScreen(Screen):
+class TestScreen(BaseTestScreenWithDescription):
     """The class implements a screen for the tests."""
 
-    description = 'A test description.'
 
-
-class TestStartScreen(StartMixin):
+class TestStartScreen(BaseTestScreenWithDescription, StartMixin):
     """The class implements a start screen for the tests."""
-
-    description = 'A test StartScreen description.'
