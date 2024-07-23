@@ -24,7 +24,7 @@ from tests.base import (
     TestDenyingPermission,
     TestStartScreen,
 )
-from tests.test_application import _APPLICATION_TEST_NAME
+from tests.test_application import APPLICATION_TEST_NAME
 
 
 class MainPermission(BaseTestPermission):
@@ -70,7 +70,7 @@ class PermissionsTests(BaseTestCase):
     def _init_application(screens=None):
         """Return an initialized application."""
         Application(
-            _APPLICATION_TEST_NAME,
+            APPLICATION_TEST_NAME,
             entry_point=TestStartScreen,
             states={
                 DEFAULT_STATE: screens,
