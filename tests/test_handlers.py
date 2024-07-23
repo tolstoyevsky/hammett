@@ -13,6 +13,7 @@ from hammett.core.handlers import (
 )
 from hammett.core.screen import Screen
 from hammett.test.base import BaseTestCase
+from tests.base import BaseTestScreenWithHandler
 
 if TYPE_CHECKING:
     from hammett.types import Handler
@@ -22,13 +23,8 @@ _TEST_BUTTON_NAME = 'Test button'
 _UNSUPPORTED_TYPE_VALUE = 1
 
 
-class TestScreenWithHandler(Screen):
+class TestScreenWithHandler(BaseTestScreenWithHandler):
     """The class implements a screen with a handler."""
-
-    @register_button_handler
-    async def handler(self, _update, _context):
-        """Represent a stub handler for the testing purposes."""
-        return DEFAULT_STATE
 
 
 class TestScreenWithStaticHandler(Screen):
