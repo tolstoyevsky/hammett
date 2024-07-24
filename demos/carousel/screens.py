@@ -5,6 +5,8 @@ from hammett.widgets import CarouselWidget
 
 
 class MainMenu(CarouselWidget):
+    """The class implements the MainMenu screen."""
+
     cache_covers = True
     caption = 'Take part in Open Source and become a superhero🕷🕸 in software development!'
     homepage = "Here's the Hammett homepage: https://github.com/cusdeb-com/hammett"

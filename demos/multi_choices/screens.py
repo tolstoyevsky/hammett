@@ -4,6 +4,8 @@ from hammett.widgets import MultiChoiceWidget
 
 
 class MainMenu(MultiChoiceWidget):
+    """The class implements the MainMenu screen."""
+
     choices = (
         ('1', 'First choice'),
         ('2', 'Second choice'),
