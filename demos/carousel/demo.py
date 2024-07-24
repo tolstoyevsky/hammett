@@ -8,7 +8,6 @@ from demos.carousel.screens import MainMenu
 
 def main():
     """Runs the bot. """
-
     name = 'carousel'
     app = Application(
         name,

@@ -43,7 +43,6 @@ class YetAnotherScreen(StartMixin, Screen):
 
 def main():
     """Runs the bot."""
-
     name = 'hello_world'
     app = Application(
         name,
