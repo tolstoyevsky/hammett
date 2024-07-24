@@ -1,3 +1,5 @@
+"""The module is a script to run the bot."""
+
 from hammett.core import Application, Button
 from hammett.core.constants import DEFAULT_STATE, SourcesTypes
 from hammett.core.mixins import StartMixin
