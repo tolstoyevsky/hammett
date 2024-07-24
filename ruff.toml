@@ -1,6 +1,6 @@
 line-length = 100
 
-exclude = [".git/", "demos/"]
+exclude = [".git/"]
 
 target-version = "py310"
 
@@ -28,6 +28,7 @@ ignore = [
 inline-quotes = "single"
 
 [lint.per-file-ignores]
+"demos/*" = ["ANN"]
 "tests/*" = ["ANN"]
 
 [lint.pylint]
