@@ -12,6 +12,7 @@ class HelloScreen(StartMixin, Screen):
     description = 'Hello, World!'
 
     async def add_default_keyboard(self, _update, _context):
+        """Set up the default keyboard for the screen."""
         return [[
             Button(
                 'Next screen ➡️',
@@ -30,6 +31,7 @@ class YetAnotherScreen(StartMixin, Screen):
     )
 
     async def add_default_keyboard(self, _update, _context):
+        """Set up the default keyboard for the screen."""
         return [[
             Button(
                 '⬅️ Back',

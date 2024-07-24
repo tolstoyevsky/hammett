@@ -24,4 +24,5 @@ class MainMenu(CarouselWidget):
     ]
 
     async def start(self, update, context):
+        """Reply to the /start command."""
         return await self.jump(update, context)
