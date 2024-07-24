@@ -13,7 +13,7 @@ class HelloScreen(StartMixin, Screen):
                 'Next screen ➡️',
                 YetAnotherScreen,
                 source_type=SourcesTypes.MOVE_SOURCE_TYPE,
-            )
+            ),
         ]]
 
 
@@ -29,7 +29,7 @@ class YetAnotherScreen(StartMixin, Screen):
                 '⬅️ Back',
                 HelloScreen,
                 source_type=SourcesTypes.MOVE_SOURCE_TYPE,
-            )
+            ),
         ]]
 
 
