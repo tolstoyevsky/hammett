@@ -13,6 +13,8 @@ LOGGER = logging.getLogger('hammett')
 
 
 class NotAdminConfirmation(Screen):
+    """The class implements the NotAdminConfirmation screen."""
+
     description = 'Are you sure you want to remove yourself from the admin group?'
 
     async def add_default_keyboard(self, _update, _context):
@@ -37,6 +39,8 @@ class NotAdminConfirmation(Screen):
 
 
 class MainMenu(StartMixin, Screen):
+    """The class implements the MainMenu screen."""
+
     admin_status = 'admin'
     anonymous_status = 'anonymous'
     greeting = 'Hello, <b>{user_status}</b>!'
@@ -110,6 +114,8 @@ class MainMenu(StartMixin, Screen):
 
 
 class SecretRoom(Screen):
+    """The class implements the SecretRoom screen."""
+
     description = 'This is the secret room available only for admins.'
 
     async def add_default_keyboard(self, _update, _context):

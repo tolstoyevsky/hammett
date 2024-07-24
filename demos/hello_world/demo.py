@@ -7,6 +7,8 @@ from hammett.core.screen import Screen
 
 
 class HelloScreen(StartMixin, Screen):
+    """The class implements the HelloScreen screen."""
+
     description = 'Hello, World!'
 
     async def add_default_keyboard(self, _update, _context):
@@ -20,6 +22,8 @@ class HelloScreen(StartMixin, Screen):
 
 
 class YetAnotherScreen(StartMixin, Screen):
+    """The class implements the YetAnotherScreen screen."""
+
     description = (
         'This is just another screen to demonstrate the built-in '
         'capability to switch between screens.'
