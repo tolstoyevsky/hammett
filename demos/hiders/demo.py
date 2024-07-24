@@ -9,7 +9,6 @@ from demos.hiders.screens import MainMenu
 
 def main():
     """Runs the bot. """
-
     name = 'hiders'
     app = Application(
         name,

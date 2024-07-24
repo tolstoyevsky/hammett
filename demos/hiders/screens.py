@@ -103,7 +103,6 @@ class MainMenu(StartMixin, Screen):
 
     async def start(self, update, context):
         """Replies to the /start command. """
-
         try:
             user = update.message.from_user
         except AttributeError:

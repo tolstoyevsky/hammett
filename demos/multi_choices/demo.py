@@ -8,7 +8,6 @@ from demos.multi_choices.screens import MainMenu
 
 def main():
     """Runs the bot."""
-
     name = 'multi_choices'
     app = Application(
         name,
