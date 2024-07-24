@@ -1,4 +1,4 @@
-"""The module contains the screens the bot consists of. """
+"""The module contains the screens the bot consists of."""
 
 import logging
 
@@ -102,7 +102,7 @@ class MainMenu(StartMixin, Screen):
         ]
 
     async def start(self, update, context):
-        """Replies to the /start command. """
+        """Replies to the /start command."""
         try:
             user = update.message.from_user
         except AttributeError:

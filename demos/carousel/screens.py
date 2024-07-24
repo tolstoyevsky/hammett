@@ -1,4 +1,4 @@
-"""The module contains the screens the bot consists of. """
+"""The module contains the screens the bot consists of."""
 
 from hammett.conf import settings
 from hammett.widgets import CarouselWidget
