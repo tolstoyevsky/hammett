@@ -1,6 +1,6 @@
 """The module is a script to run the bot."""
 
-from hammett.core import Application
+from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
 
 from demos.carousel.screens import MainMenu
