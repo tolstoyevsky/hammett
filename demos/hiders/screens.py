@@ -18,6 +18,7 @@ class NotAdminConfirmation(Screen):
     description = 'Are you sure you want to remove yourself from the admin group?'
 
     async def add_default_keyboard(self, _update, _context):
+        """Set up the default keyboard for the screen."""
         return [
             [
                 Button('✅ Yes', self.exclude_user_from_admin_group),
@@ -29,6 +30,7 @@ class NotAdminConfirmation(Screen):
     @staticmethod
     @register_button_handler
     async def exclude_user_from_admin_group(update, context):
+        """Handle an excluding of the user from the admin group."""
         main_menu = MainMenu()
         user = update.effective_user
 
@@ -70,6 +72,7 @@ class MainMenu(StartMixin, Screen):
     #
 
     async def get_config(self, update, _context, **_kwargs):
+        """Return the config of the screen."""
         user = update.effective_user
         user_status = await self._get_user_status(user.id)
         description = self.text_map[user_status].format(user_status=user_status)
@@ -80,6 +83,7 @@ class MainMenu(StartMixin, Screen):
         return config
 
     async def add_default_keyboard(self, _update, _context):
+        """Set up the default keyboard for the screen."""
         return [
             [
                 Button('🔒 Available only for admins', SecretRoom,
@@ -119,6 +123,7 @@ class SecretRoom(Screen):
     description = 'This is the secret room available only for admins.'
 
     async def add_default_keyboard(self, _update, _context):
+        """Set up the default keyboard for the screen."""
         return [
             [
                 Button('⬅️ Main Menu', MainMenu,

@@ -14,4 +14,5 @@ class MainMenu(SingleChoiceWidget):
     description = 'Single choice'
 
     async def start(self, update, context):
+        """Reply to the /start command."""
         return await self.jump(update, context)
