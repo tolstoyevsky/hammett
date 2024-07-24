@@ -1,4 +1,4 @@
-"""The module contains the hiders checker for the bot. """
+"""The module contains the hiders checker for the bot."""
 
 from hammett.conf import settings
 from hammett.core.hider import HidersChecker

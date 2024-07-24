@@ -7,7 +7,7 @@ from demos.carousel.screens import MainMenu
 
 
 def main():
-    """Runs the bot. """
+    """Runs the bot."""
     name = 'carousel'
     app = Application(
         name,

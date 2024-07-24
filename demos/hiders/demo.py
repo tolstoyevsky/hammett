@@ -8,7 +8,7 @@ from demos.hiders.screens import MainMenu
 
 
 def main():
-    """Runs the bot. """
+    """Runs the bot."""
     name = 'hiders'
     app = Application(
         name,
