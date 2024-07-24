@@ -1,5 +1,3 @@
-"""The bot is designed to demonstrate how to use the single choice widget."""
-
 from hammett.core import Application
 from hammett.core.constants import DEFAULT_STATE
 
