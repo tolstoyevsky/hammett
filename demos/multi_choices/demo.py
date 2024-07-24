@@ -1,9 +1,8 @@
 """The module is a script to run the bot."""
 
+from demos.multi_choices.screens import MainMenu
 from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
-
-from demos.multi_choices.screens import MainMenu
 
 
 def main():

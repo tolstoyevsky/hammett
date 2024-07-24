@@ -1,10 +1,9 @@
 """The module is a script to run the bot."""
 
+from demos.hiders.screens import MainMenu
 from hammett.core.application import Application
 from hammett.core.constants import DEFAULT_STATE
 from hammett.utils.autodiscovery import autodiscover_screens
-
-from demos.hiders.screens import MainMenu
 
 
 def main():
