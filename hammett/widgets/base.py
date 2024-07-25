@@ -15,8 +15,12 @@ from hammett.core.constants import (
     RenderConfig,
     SourcesTypes,
 )
-from hammett.core.exceptions import MissingPersistence
-from hammett.core.handlers import register_button_handler
+from hammett.core.exceptions import (
+    FailedToGetDataAttributeOfQuery,
+    MissingPersistence,
+    PayloadIsEmpty,
+)
+from hammett.core.handlers import get_payload_storage, register_button_handler
 from hammett.utils.misc import get_callback_query
 from hammett.widgets.exceptions import (
     ChoiceEmojisAreUndefined,
@@ -355,6 +359,30 @@ class BaseChoiceWidget(BaseWidget):
         """Return the choices made by the user."""
         current_choices = await self.get_initialized_choices(update, context)
         return tuple(filter(operator.itemgetter(0), current_choices))
+
+    @staticmethod
+    async def get_payload(
+        update: 'Update',
+        context: 'CallbackContext[BT, UD, CD, BD]',
+    ) -> str:
+        """Return the payload passed through the pressed button.
+
+        In case of the choice widgets it is necessary to keep payload
+        saved as all the choice buttons have the same payload though
+        bot's running and popping of it leads to incorrect behaviour.
+        """
+        query = await get_callback_query(update)
+
+        data = getattr(query, 'data', None)
+        if data is None:
+            raise FailedToGetDataAttributeOfQuery
+
+        payload_storage = get_payload_storage(context)
+        payload = payload_storage.get(data)
+        if not payload:
+            raise PayloadIsEmpty
+
+        return payload
 
     async def jump(
         self: 'Self',
