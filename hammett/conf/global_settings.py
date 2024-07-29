@@ -7,6 +7,10 @@ from typing import TYPE_CHECKING
 if TYPE_CHECKING:
     from typing import Any
 
+# Sets the waiting timeout for the read_timeout parameter of telegram.Bot.request.
+# https://docs.python-telegram-bot.org/en/stable/telegram.ext.applicationbuilder.html#telegram.ext.ApplicationBuilder.read_timeout
+APPLICATION_BUILDER_READ_TIMEOUT = 5.0
+
 DOMAIN = 'hammett'
 
 ERROR_HANDLER_CONF = {
