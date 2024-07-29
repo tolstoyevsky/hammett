@@ -231,7 +231,11 @@ class Application:
         """Return a native application builder."""
         from hammett.conf import settings
 
-        return NativeApplication.builder().token(settings.TOKEN)
+        return NativeApplication.builder().read_timeout(
+            settings.APPLICATION_BUILDER_READ_TIMEOUT,
+        ).token(
+            settings.TOKEN,
+        )
 
     def run(self: 'Self') -> None:
         """Run the application."""
