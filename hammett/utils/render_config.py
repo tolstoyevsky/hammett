@@ -1,6 +1,6 @@
 """The module contains helpers for working with RenderConfig."""
 
-from typing import TYPE_CHECKING, cast
+from typing import TYPE_CHECKING
 
 from hammett.core.constants import LATEST_SENT_MSG_KEY
 from hammett.core.exceptions import MissingPersistence
@@ -26,8 +26,8 @@ def get_latest_message(
     except TypeError:
         if context._application.persistence:  # noqa: SLF001
             try:
-                user_data = cast('UD', {**context._application.user_data})  # noqa: SLF001
-                state = user_data[message.chat_id][LATEST_SENT_MSG_KEY]  # type: ignore[index]
+                user_data = context._application.user_data[message.chat_id]  # noqa: SLF001
+                state = user_data[LATEST_SENT_MSG_KEY]  # type: ignore[index]
             except KeyError:
                 pass
 
@@ -56,8 +56,8 @@ async def save_latest_message(
             )
             raise MissingPersistence(msg) from exc
 
-        user_data = cast('UD', {**context._application.user_data})  # noqa: SLF001
-        user_data[message.chat_id].update({  # type: ignore[index]
+        user_data = context._application.user_data[message.chat_id]  # noqa: SLF001
+        user_data.update({  # type: ignore[attr-defined]
             LATEST_SENT_MSG_KEY: latest_msg,
         })
 

@@ -79,8 +79,9 @@ class BaseWidget(Screen):
                         f"or configure persistence."
                     )
                     raise MissingPersistence(msg) from exc
-                user_data = cast('UD', {**context._application.user_data})  # noqa: SLF001
-                user_data[message.chat_id].update({  # type: ignore[index]
+
+                user_data = context._application.user_data[message.chat_id]  # noqa: SLF001
+                user_data.update({  # type: ignore[attr-defined]
                     state_key: await self._initialized_state(
                         update,
                         context,
