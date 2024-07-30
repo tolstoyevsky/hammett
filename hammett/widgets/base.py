@@ -2,7 +2,6 @@
 
 import contextlib
 import json
-import logging
 import operator
 from typing import TYPE_CHECKING, cast
 
@@ -40,8 +39,6 @@ if TYPE_CHECKING:
     from hammett.core.constants import FinalRenderConfig
     from hammett.types import Keyboard, State
     from hammett.widgets.types import Choice, Choices, InitializedChoices
-
-LOGGER = logging.getLogger(__name__)
 
 
 class BaseWidget(Screen):
@@ -83,22 +80,15 @@ class BaseWidget(Screen):
                     )
                     raise MissingPersistence(msg) from exc
                 user_data = cast('UD', {**context._application.user_data})  # noqa: SLF001
-                try:
-                    user_data[message.chat_id].update({  # type: ignore[index]
-                        state_key: await self._initialized_state(
-                            update,
-                            context,
-                            message,
-                            config,
-                            **kwargs,
-                        ),
-                    })
-                except KeyError:
-                    msg = (
-                        f'Can not update user_data with the carousel widget message id '
-                        f'({message.id})'
-                    )
-                    LOGGER.warning(msg)
+                user_data[message.chat_id].update({  # type: ignore[index]
+                    state_key: await self._initialized_state(
+                        update,
+                        context,
+                        message,
+                        config,
+                        **kwargs,
+                    ),
+                })
 
                 await context._application.persistence.update_user_data(  # noqa: SLF001
                     message.chat_id,
