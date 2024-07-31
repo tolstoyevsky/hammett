@@ -11,10 +11,9 @@ from hammett.core.exceptions import ImproperlyConfigured
 from hammett.core.persistence import RedisPersistence, _Encoder
 from hammett.test.base import BaseTestCase
 from hammett.test.utils import override_settings
+from tests.base import CHAT_ID
 
 _BOT_NAME = 'test'
-
-_CHAT_ID = 123456789
 
 _DATA = {'key1': 'value1', 'key2': 'value2'}
 
@@ -39,14 +38,14 @@ class PersistenceTests(BaseTestCase):
         """Test decoding and encoding of the conversations object."""
         conversations = {
             _BOT_NAME: {
-                (_CHAT_ID, _USER_ID): 'state',
+                (CHAT_ID, _USER_ID): 'state',
             },
         }
 
         encoded_conversation = self.persistence._encode_conversations(conversations)
         self.assertEqual(
             encoded_conversation,
-            f'{{"{_BOT_NAME}": {{"[{_CHAT_ID}, {_USER_ID}]": "state"}}}}',
+            f'{{"{_BOT_NAME}": {{"[{CHAT_ID}, {_USER_ID}]": "state"}}}}',
         )
 
         decoded_conversation = self.persistence._decode_conversations(encoded_conversation)
@@ -61,7 +60,7 @@ class PersistenceTests(BaseTestCase):
 
     async def test_dropping_of_empty_chat_data(self):
         """Test dropping of the empty chat_data."""
-        await self.persistence.drop_chat_data(_CHAT_ID)
+        await self.persistence.drop_chat_data(CHAT_ID)
         self.assertIsNone(self.persistence.user_data)
 
     async def test_dropping_of_empty_user_data(self):
@@ -93,10 +92,10 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(conversations, {})
 
         await self.persistence.update_conversation(
-            _BOT_NAME, (_CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
         )
         updated_conversations = await self.persistence.get_conversations(_BOT_NAME)
-        self.assertEqual(updated_conversations, {(_CHAT_ID, _USER_ID): _NEW_STATE})
+        self.assertEqual(updated_conversations, {(CHAT_ID, _USER_ID): _NEW_STATE})
 
     async def test_getting_data_from_database_directly(self):
         """Test getting a data from a database directly."""
@@ -110,11 +109,11 @@ class PersistenceTests(BaseTestCase):
         chat_data = await self.persistence.get_chat_data()
         self.assertEqual(chat_data, {})
 
-        await self.persistence.update_chat_data(_CHAT_ID, _DATA)
+        await self.persistence.update_chat_data(CHAT_ID, _DATA)
         updated_chat_data = await self.persistence.get_chat_data()
-        self.assertEqual(updated_chat_data, {_CHAT_ID: _DATA})
+        self.assertEqual(updated_chat_data, {CHAT_ID: _DATA})
 
-        await self.persistence.drop_chat_data(_CHAT_ID)
+        await self.persistence.drop_chat_data(CHAT_ID)
         dropped_chat_data = await self.persistence.get_chat_data()
         self.assertEqual(dropped_chat_data, {})
 
@@ -169,9 +168,9 @@ class PersistenceTests(BaseTestCase):
         await self.persistence.update_bot_data(_DATA)
         await self.persistence.update_callback_data(([], _DATA))
         await self.persistence.update_conversation(
-            _BOT_NAME, (_CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
         )
-        await self.persistence.update_chat_data(_CHAT_ID, _DATA)
+        await self.persistence.update_chat_data(CHAT_ID, _DATA)
         await self.persistence.update_user_data(_USER_ID, _DATA)
 
         await self.persistence.flush()
@@ -180,10 +179,10 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(self.persistence.callback_data, ([], _DATA))
         self.assertEqual(self.persistence.conversations, {
             _BOT_NAME: {
-                (_CHAT_ID, _USER_ID): _NEW_STATE,
+                (CHAT_ID, _USER_ID): _NEW_STATE,
             },
         })
-        self.assertEqual(self.persistence.chat_data, {_CHAT_ID: _DATA})
+        self.assertEqual(self.persistence.chat_data, {CHAT_ID: _DATA})
         self.assertEqual(self.persistence.user_data, {_USER_ID: _DATA})
 
     async def test_updating_persistence_data_when_it_is_up_to_date(self):
@@ -197,20 +196,20 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(self.persistence.callback_data, ([], _DATA))
 
         await self.persistence.update_conversation(
-            _BOT_NAME, (_CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
         )
         await self.persistence.update_conversation(
-            _BOT_NAME, (_CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
         )
         self.assertEqual(self.persistence.conversations, {
             _BOT_NAME: {
-                (_CHAT_ID, _USER_ID): _NEW_STATE,
+                (CHAT_ID, _USER_ID): _NEW_STATE,
             },
         })
 
-        await self.persistence.update_chat_data(_CHAT_ID, _DATA)
-        await self.persistence.update_chat_data(_CHAT_ID, _DATA)
-        self.assertEqual(self.persistence.chat_data, {_CHAT_ID: _DATA})
+        await self.persistence.update_chat_data(CHAT_ID, _DATA)
+        await self.persistence.update_chat_data(CHAT_ID, _DATA)
+        self.assertEqual(self.persistence.chat_data, {CHAT_ID: _DATA})
 
         await self.persistence.update_user_data(_USER_ID, _DATA)
         await self.persistence.update_user_data(_USER_ID, _DATA)
