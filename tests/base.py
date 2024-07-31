@@ -17,6 +17,8 @@ PERMISSION_DENIED_STATE = '1'
 
 PERMISSIONS_ORDER = []
 
+USER_ID = 123456789
+
 
 class BaseTestPermission(Permission, ABC):
     """The class implements a base permission for the tests."""

@@ -11,7 +11,7 @@ from hammett.core.exceptions import ImproperlyConfigured
 from hammett.core.persistence import RedisPersistence, _Encoder
 from hammett.test.base import BaseTestCase
 from hammett.test.utils import override_settings
-from tests.base import CHAT_ID
+from tests.base import CHAT_ID, USER_ID
 
 _BOT_NAME = 'test'
 
@@ -20,8 +20,6 @@ _DATA = {'key1': 'value1', 'key2': 'value2'}
 _NEW_STATE = 'new_state'
 
 _TEST_KEY = 'test_key'
-
-_USER_ID = 123456789
 
 
 class PersistenceTests(BaseTestCase):
@@ -38,14 +36,14 @@ class PersistenceTests(BaseTestCase):
         """Test decoding and encoding of the conversations object."""
         conversations = {
             _BOT_NAME: {
-                (CHAT_ID, _USER_ID): 'state',
+                (CHAT_ID, USER_ID): 'state',
             },
         }
 
         encoded_conversation = self.persistence._encode_conversations(conversations)
         self.assertEqual(
             encoded_conversation,
-            f'{{"{_BOT_NAME}": {{"[{CHAT_ID}, {_USER_ID}]": "state"}}}}',
+            f'{{"{_BOT_NAME}": {{"[{CHAT_ID}, {USER_ID}]": "state"}}}}',
         )
 
         decoded_conversation = self.persistence._decode_conversations(encoded_conversation)
@@ -54,9 +52,9 @@ class PersistenceTests(BaseTestCase):
     async def test_decoding_of_data(self):
         """Test decoding of the data."""
         decoded_data = self.persistence._decode_data({
-            str(_USER_ID): json.dumps(_DATA).encode('utf-8'),
+            str(USER_ID): json.dumps(_DATA).encode('utf-8'),
         })
-        self.assertDictEqual(decoded_data, {_USER_ID: _DATA})
+        self.assertDictEqual(decoded_data, {USER_ID: _DATA})
 
     async def test_dropping_of_empty_chat_data(self):
         """Test dropping of the empty chat_data."""
@@ -65,7 +63,7 @@ class PersistenceTests(BaseTestCase):
 
     async def test_dropping_of_empty_user_data(self):
         """Test dropping of the empty user_data."""
-        await self.persistence.drop_user_data(_USER_ID)
+        await self.persistence.drop_user_data(USER_ID)
         self.assertIsNone(self.persistence.user_data)
 
     async def test_getting_and_setting_of_bot_data(self):
@@ -92,10 +90,10 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(conversations, {})
 
         await self.persistence.update_conversation(
-            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, USER_ID), _NEW_STATE,
         )
         updated_conversations = await self.persistence.get_conversations(_BOT_NAME)
-        self.assertEqual(updated_conversations, {(CHAT_ID, _USER_ID): _NEW_STATE})
+        self.assertEqual(updated_conversations, {(CHAT_ID, USER_ID): _NEW_STATE})
 
     async def test_getting_data_from_database_directly(self):
         """Test getting a data from a database directly."""
@@ -122,11 +120,11 @@ class PersistenceTests(BaseTestCase):
         user_data = await self.persistence.get_user_data()
         self.assertEqual(user_data, {})
 
-        await self.persistence.update_user_data(_USER_ID, _DATA)
+        await self.persistence.update_user_data(USER_ID, _DATA)
         updated_user_data = await self.persistence.get_user_data()
-        self.assertEqual(updated_user_data, {_USER_ID: _DATA})
+        self.assertEqual(updated_user_data, {USER_ID: _DATA})
 
-        await self.persistence.drop_user_data(_USER_ID)
+        await self.persistence.drop_user_data(USER_ID)
         dropped_user_data = await self.persistence.get_user_data()
         self.assertEqual(dropped_user_data, {})
 
@@ -140,7 +138,7 @@ class PersistenceTests(BaseTestCase):
 
     async def test_hgetall_by_chunks_method(self):
         """Test a hgetall_by_chunks persistence method."""
-        data = {_USER_ID: _DATA}
+        data = {USER_ID: _DATA}
         await self.persistence._hsetall_data('test_key', data)
 
         encoded_data = await self.persistence._hgetall_by_chunks('test_key')
@@ -168,10 +166,10 @@ class PersistenceTests(BaseTestCase):
         await self.persistence.update_bot_data(_DATA)
         await self.persistence.update_callback_data(([], _DATA))
         await self.persistence.update_conversation(
-            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, USER_ID), _NEW_STATE,
         )
         await self.persistence.update_chat_data(CHAT_ID, _DATA)
-        await self.persistence.update_user_data(_USER_ID, _DATA)
+        await self.persistence.update_user_data(USER_ID, _DATA)
 
         await self.persistence.flush()
 
@@ -179,11 +177,11 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(self.persistence.callback_data, ([], _DATA))
         self.assertEqual(self.persistence.conversations, {
             _BOT_NAME: {
-                (CHAT_ID, _USER_ID): _NEW_STATE,
+                (CHAT_ID, USER_ID): _NEW_STATE,
             },
         })
         self.assertEqual(self.persistence.chat_data, {CHAT_ID: _DATA})
-        self.assertEqual(self.persistence.user_data, {_USER_ID: _DATA})
+        self.assertEqual(self.persistence.user_data, {USER_ID: _DATA})
 
     async def test_updating_persistence_data_when_it_is_up_to_date(self):
         """Test updating chat_data when it is up-to-date."""
@@ -196,14 +194,14 @@ class PersistenceTests(BaseTestCase):
         self.assertEqual(self.persistence.callback_data, ([], _DATA))
 
         await self.persistence.update_conversation(
-            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, USER_ID), _NEW_STATE,
         )
         await self.persistence.update_conversation(
-            _BOT_NAME, (CHAT_ID, _USER_ID), _NEW_STATE,
+            _BOT_NAME, (CHAT_ID, USER_ID), _NEW_STATE,
         )
         self.assertEqual(self.persistence.conversations, {
             _BOT_NAME: {
-                (CHAT_ID, _USER_ID): _NEW_STATE,
+                (CHAT_ID, USER_ID): _NEW_STATE,
             },
         })
 
@@ -211,6 +209,6 @@ class PersistenceTests(BaseTestCase):
         await self.persistence.update_chat_data(CHAT_ID, _DATA)
         self.assertEqual(self.persistence.chat_data, {CHAT_ID: _DATA})
 
-        await self.persistence.update_user_data(_USER_ID, _DATA)
-        await self.persistence.update_user_data(_USER_ID, _DATA)
-        self.assertEqual(self.persistence.user_data, {_USER_ID: _DATA})
+        await self.persistence.update_user_data(USER_ID, _DATA)
+        await self.persistence.update_user_data(USER_ID, _DATA)
+        self.assertEqual(self.persistence.user_data, {USER_ID: _DATA})
