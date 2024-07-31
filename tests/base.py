@@ -11,6 +11,8 @@ from hammett.core.screen import Screen
 
 APPLICATION_TEST_NAME = 'test'
 
+CHAT_ID = 123456789
+
 PERMISSION_DENIED_STATE = '1'
 
 PERMISSIONS_ORDER = []
