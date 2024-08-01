@@ -30,12 +30,13 @@ both Hammett itself and the bots based on the framework.
 
 import asyncio
 import unittest
+from asyncio import Queue
 from typing import TYPE_CHECKING
 
 from asgiref.sync import async_to_sync
 from telegram import Bot, Update
 from telegram._utils.defaultvalue import DEFAULT_NONE
-from telegram.ext import Application, CallbackContext
+from telegram.ext import Application, CallbackContext, ContextTypes
 
 from hammett.conf import settings
 
@@ -81,7 +82,18 @@ class BaseTestCase(unittest.TestCase):
     def __init__(self: 'Self', method_name: str) -> None:
         """Initialize a base test case object."""
         self.context: CallbackContext = TestContext(  # type: ignore[type-arg]
-            Application.builder(),  # type: ignore[arg-type]
+            Application(
+                bot=TestBot(token=settings.TOKEN),
+                update_queue=Queue(),
+                updater=None,
+                job_queue=None,
+                concurrent_updates=False,
+                persistence=None,
+                context_types=ContextTypes(),  # type: ignore[arg-type]
+                post_init=None,
+                post_shutdown=None,
+                post_stop=None,
+            ),
         )
         self.update = Update(1)
 
