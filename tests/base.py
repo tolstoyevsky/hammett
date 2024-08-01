@@ -1,17 +1,24 @@
 """The module contains the classes for the Hammett tests."""
 
+import datetime
 from abc import ABC
+
+from telegram import Chat, Message
+from telegram.constants import ChatType
 
 from hammett.core import Application
 from hammett.core.constants import DEFAULT_STATE
 from hammett.core.handlers import register_button_handler
 from hammett.core.mixins import StartMixin
 from hammett.core.permission import Permission
+from hammett.core.renderer import Renderer
 from hammett.core.screen import Screen
 
 APPLICATION_TEST_NAME = 'test'
 
 CHAT_ID = 123456789
+
+MESSAGE_ID = 123
 
 PERMISSION_DENIED_STATE = '1'
 
@@ -48,6 +55,21 @@ class BaseTestScreenWithHandler(Screen):
         return DEFAULT_STATE
 
 
+class BaseTestScreenWithHideKeyboard(Screen):
+    """The class represents the base screen for the testing purposes."""
+
+    hide_keyboard = True
+
+
+class BaseTestScreenWithMockedRenderer(Screen):
+    """The class represents the base screen for the testing purposes."""
+
+    def __init__(self):
+        """Initialize a screen object."""
+        super().__init__()
+        self.renderer = TestRenderer(self.html_parse_mode)
+
+
 class TestDenyingPermission(BaseTestPermission):
     """The class implements a permission that can never be given."""
 
@@ -62,6 +84,18 @@ class TestGivingPermission(BaseTestPermission):
     async def has_permission(self, _update, _context):
         """Represent a stub permission checker for the testing purpose."""
         return True
+
+
+class TestRenderer(Renderer):
+    """The class implements screen rendering."""
+
+    async def render(self, _update, _context, _config, **_kwargs):
+        """Represent a stub for testing purposes."""
+        return Message(
+            MESSAGE_ID,
+            datetime.datetime(2000, 1, 1, 0, 0, 0, tzinfo=datetime.timezone.utc),
+            Chat(CHAT_ID, ChatType.SENDER),
+        )
 
 
 class TestScreen(BaseTestScreenWithDescription):

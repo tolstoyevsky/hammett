@@ -14,6 +14,7 @@ from tests.test_permissions_mechanism import PermissionsTests
 from tests.test_persistence import PersistenceTests
 from tests.test_screens import ScreenTests
 from tests.test_start_marker import StartMarkerTests
+from tests.test_widgets.test_carousel import CarouselWidgetTests
 
 if __name__ == '__main__':
     os.environ.setdefault('HAMMETT_SETTINGS_MODULE', 'tests.settings')
