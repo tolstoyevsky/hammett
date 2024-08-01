@@ -1,10 +1,34 @@
 """The module contains the tests for the screens."""
 
-from hammett.core.constants import DEFAULT_STATE
+# ruff: noqa: S106, SLF001
+
+from fakeredis import FakeAsyncRedis
+
+from hammett.core.constants import DEFAULT_STATE, LATEST_SENT_MSG_KEY
 from hammett.core.exceptions import ScreenDescriptionIsEmpty
+from hammett.core.persistence import RedisPersistence
 from hammett.core.screen import Screen
 from hammett.test.base import BaseTestCase
-from tests.base import TestScreen
+from hammett.test.utils import override_settings
+from tests.base import (
+    CHAT_ID,
+    MESSAGE_ID,
+    USER_ID,
+    BaseTestScreenWithDescription,
+    BaseTestScreenWithHideKeyboard,
+    BaseTestScreenWithMockedRenderer,
+    TestScreen,
+)
+
+_DATA = {'key1': 'value1', 'key2': 'value2'}
+
+
+class TestScreenWithMockedRendererAndHideKeyboard(
+    BaseTestScreenWithMockedRenderer,
+    BaseTestScreenWithDescription,
+    BaseTestScreenWithHideKeyboard,
+):
+    """The class represents the base screen for the testing purposes."""
 
 
 class TestScreenWithoutDescription(Screen):
@@ -26,3 +50,26 @@ class ScreenTests(BaseTestCase):
         state = await screen.send(self.context)
 
         self.assertEqual(state, DEFAULT_STATE)
+
+    @override_settings(SAVE_LATEST_MESSAGE=True, TOKEN='secret-token')
+    async def test_updating_user_data_after_sending_notification_with_hiding_keyboard(self):
+        """Test updating the user_data when a screen is sent as a notification
+        with hiding keyboard.
+        """
+        self.context._application.persistence = RedisPersistence()
+        self.context._application.persistence.redis_cli = FakeAsyncRedis()
+        self.context._application.user_data = {USER_ID: _DATA}
+
+        await TestScreenWithMockedRendererAndHideKeyboard().send(self.context)
+
+        updated_user_data = self.context._application.persistence.user_data
+        self.assertEqual(updated_user_data, {
+            USER_ID: {
+                LATEST_SENT_MSG_KEY: {
+                    'hide_keyboard': True,
+                    'message_id': MESSAGE_ID,
+                    'chat_id': CHAT_ID,
+                },
+                **_DATA,
+            },
+        })
