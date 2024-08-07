@@ -13,6 +13,7 @@ ignore = [
     "ANN401",  # any-type
     "CPY001", # missing-copyright-notice
     "D205",  # blank-line-after-summary
+    "DOC201", # docstring-missing-returns
     "DOC501",  # docstring-missing-exception
     "N818",  # error-suffix-on-exception-name
     "PLC0415", # import-outside-top-level
