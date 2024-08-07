@@ -2,6 +2,7 @@
 (i.e., cover, description and keyboard).
 """
 
+import contextlib
 import logging
 from dataclasses import asdict
 from typing import TYPE_CHECKING, cast
@@ -9,7 +10,13 @@ from typing import TYPE_CHECKING, cast
 from telegram._utils.defaultvalue import DEFAULT_NONE
 
 from hammett.core import handlers
-from hammett.core.constants import DEFAULT_STATE, EMPTY_KEYBOARD, FinalRenderConfig, RenderConfig
+from hammett.core.constants import (
+    DEFAULT_STATE,
+    EMPTY_KEYBOARD,
+    WIDGET_STATES_TO_CLEAN,
+    FinalRenderConfig,
+    RenderConfig,
+)
 from hammett.core.exceptions import (
     FailedToGetDataAttributeOfQuery,
     PayloadIsEmpty,
@@ -130,6 +137,7 @@ class Screen:
     ) -> None:
         """Run after screen rendering."""
         from hammett.conf import settings
+        from hammett.widgets.base import BaseWidget
 
         if isinstance(message, tuple):
             message = message[-1]
@@ -139,8 +147,23 @@ class Screen:
             if prev_message and prev_message['hide_keyboard']:
                 await self.renderer.hide_keyboard(context, prev_message)
 
+                with contextlib.suppress(AttributeError):
+                    widget_states_to_clean = context.user_data.get(WIDGET_STATES_TO_CLEAN)  # type: ignore[union-attr]
+                    if widget_states_to_clean:
+                        for widget_state_to_clean in widget_states_to_clean:
+                            context.user_data.pop(widget_state_to_clean, None)  # type: ignore[union-attr]
+
+                        context.user_data[WIDGET_STATES_TO_CLEAN].clear()  # type: ignore[index]
+
         if settings.SAVE_LATEST_MESSAGE:
-            await save_latest_message(context, config, message)
+            widget_state_key = ''
+            if isinstance(self, BaseWidget):
+                widget_state_key = await self._get_state_key(
+                    chat_id=config.chat_id or message.chat_id,
+                    message_id=message.message_id,
+                )
+
+            await save_latest_message(context, config, message, widget_state_key)
         elif config.hide_keyboard:
             LOGGER.warning(
                 'The keyboard hiding feature does not work without '

@@ -16,6 +16,8 @@ EMPTY_KEYBOARD: 'Keyboard' = []
 
 LATEST_SENT_MSG_KEY = 'latest_sent_msg'
 
+WIDGET_STATES_TO_CLEAN = 'widget_states_to_clean'
+
 
 class SourcesTypes(Enum):
     """The class contains the available types of sources."""
@@ -60,3 +62,4 @@ class LatestMessage(TypedDict):
     chat_id: int
     message_id: int
     hide_keyboard: bool
+    widget_state_key: str
