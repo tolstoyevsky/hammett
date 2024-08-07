@@ -10,6 +10,7 @@ extend-select = ["W", "E"]
 preview = true
 
 ignore = [
+    "A004", # builtin-import-shadowing
     "ANN401",  # any-type
     "CPY001", # missing-copyright-notice
     "D205",  # blank-line-after-summary
