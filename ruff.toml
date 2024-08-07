@@ -11,6 +11,7 @@ preview = true
 
 ignore = [
     "A004", # builtin-import-shadowing
+    "A005", # builtin-module-shadowing
     "ANN401",  # any-type
     "CPY001", # missing-copyright-notice
     "D205",  # blank-line-after-summary
