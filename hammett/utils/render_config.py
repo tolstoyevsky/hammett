@@ -1,5 +1,7 @@
 """The module contains helpers for working with RenderConfig."""
 
+# ruff: noqa: SLF001
+
 from typing import TYPE_CHECKING
 
 from hammett.core.constants import LATEST_SENT_MSG_KEY, WIDGET_STATES_TO_CLEAN
@@ -37,9 +39,9 @@ def get_latest_message(
     except KeyError:
         pass
     except TypeError:
-        if context._application.persistence:  # noqa: SLF001
+        if context._application.persistence:
             try:
-                user_data = context._application.user_data[message.chat_id]  # noqa: SLF001
+                user_data = context._application.user_data[message.chat_id]
                 state = user_data[LATEST_SENT_MSG_KEY]  # type: ignore[index]
             except KeyError:
                 pass
@@ -67,7 +69,7 @@ async def save_latest_message(
 
         context.user_data[LATEST_SENT_MSG_KEY] = latest_msg  # type: ignore[index]
     except AttributeError as exc:
-        if not context._application.persistence:  # noqa: SLF001
+        if not context._application.persistence:
             msg = (
                 "It's not possible to pass data to user_data. "
                 f"To solve the issue either don't use {save_latest_message.__name__} in jobs "
@@ -75,14 +77,14 @@ async def save_latest_message(
             )
             raise MissingPersistence(msg) from exc
 
-        user_data = context._application.user_data[message.chat_id]  # noqa: SLF001
+        user_data = context._application.user_data[message.chat_id]
         _set_widget_state_to_clean(latest_msg, user_data)
 
         user_data.update({  # type: ignore[attr-defined]
             LATEST_SENT_MSG_KEY: latest_msg,
         })
 
-        await context._application.persistence.update_user_data(  # noqa: SLF001
+        await context._application.persistence.update_user_data(
             message.chat_id,
             user_data,
         )
