@@ -47,7 +47,13 @@ class Renderer:
         document: 'Document',
         description: str,
     ) -> InputMediaDocument:
-        """Create an object that represents a document to be sent."""
+        """Create an object that represents a document to be sent.
+
+        Returns
+        -------
+            Object of the `InputMediaDocument` type with passed attributes.
+
+        """
         try:
             media = document['media']
         except KeyError as exc:
@@ -67,7 +73,13 @@ class Renderer:
         caption: str,
         media: 'FileInput | PhotoSize',
     ) -> InputMediaPhoto:
-        """Create an object that represents a photo to be sent."""
+        """Create an object that represents a photo to be sent.
+
+        Returns
+        -------
+            Object of the `InputMediaPhoto` type with passed attributes.
+
+        """
         return InputMediaPhoto(
             caption=caption,
             media=media,
@@ -97,7 +109,13 @@ class Renderer:
         context: 'CallbackContext[BT, UD, CD, BD]',
         config: 'FinalRenderConfig',
     ) -> tuple['Callable[..., Awaitable[Any]] | None', dict[str, 'Any']]:
-        """Return the render method and its kwargs for editing a message."""
+        """Return the render method and its kwargs for editing a message.
+
+        Returns
+        -------
+            Render method and its kwargs for editing a message.
+
+        """
         kwargs: Any = {
             'chat_id': config.chat_id,
             'message_id': config.message_id,
@@ -129,7 +147,13 @@ class Renderer:
         description: str = '',
         cache_covers: bool = False,
     ) -> 'Any':
-        """Return the kwargs for edit render method with media."""
+        """Return the kwargs for edit render method with media.
+
+        Returns
+        -------
+            Kwargs for edit render method with media.
+
+        """
         kwargs: Any = {}
         if isinstance(media, dict):
             kwargs['media'] = self._create_input_media_document(media, description)
@@ -163,7 +187,13 @@ class Renderer:
         context: 'CallbackContext[BT, UD, CD, BD]',
         config: 'FinalRenderConfig',
     ) -> tuple['Callable[..., Awaitable[Any]]', dict[str, 'Any']]:
-        """Return the render method and its kwargs for sending a new message."""
+        """Return the render method and its kwargs for sending a new message.
+
+        Returns
+        -------
+            Render method and its kwargs for sending a new message.
+
+        """
         kwargs: Any = {
             'chat_id': config.chat_id,
             'parse_mode': ParseMode.HTML if self.html_parse_mode else DEFAULT_NONE,
@@ -203,7 +233,13 @@ class Renderer:
 
     @staticmethod
     def _is_url(cover: 'str | PathLike[str]') -> bool:
-        """Check if the cover is specified using either a local path or a URL."""
+        """Check if the cover is specified using either a local path or a URL.
+
+        Returns
+        -------
+            Result of checking the cover for URL format.
+
+        """
         return bool(re.search(r'^https?://', str(cover)))
 
     #
@@ -238,6 +274,11 @@ class Renderer:
     ) -> 'Message | tuple[Message]| None':
         """Render the screen components (i.e., cover, description and keyboard),
         and return a corresponding object of the Message type.
+
+        Returns
+        -------
+            Rendered object of `Message` type.
+
         """
         send: Callable[..., Awaitable[Any]] | None = None
         method_kwargs: Any = {}

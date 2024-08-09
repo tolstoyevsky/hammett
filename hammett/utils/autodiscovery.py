@@ -21,6 +21,11 @@ def _autodiscover_screens_in_module(
 ) -> 'set[type[Screen]]':
     """Look through the specified module for subclasses of the Screen class.
     The function skips the Permission subclasses and Screen itself.
+
+    Returns
+    -------
+        Set of the subclasses of the Screen class.
+
     """
     return {
         obj for _, obj in inspect.getmembers(module)
@@ -42,6 +47,11 @@ def autodiscover_screens(
 ) -> 'set[type[Screen]]':
     """Automatically discover screens (i.e., subclasses of the Screen class),
     looking them in the specified package.
+
+    Returns
+    -------
+        Set of the screens.
+
     """
     if exclude_screens is None:
         exclude_screens = []

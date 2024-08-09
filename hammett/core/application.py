@@ -100,7 +100,13 @@ class Application:
         handler_type: 'Any | str | None',
         possible_handler: 'Handler',
     ) -> CallbackQueryHandler[Any] | MessageHandler[Any]:
-        """Return the handler object depending on its type."""
+        """Return the handler object depending on its type.
+
+        Returns
+        -------
+            Handler object.
+
+        """
         handler_object: CallbackQueryHandler[Any] | MessageHandler[Any]
         if handler_type in {HandlerType.BUTTON_HANDLER, ''}:
             handler_object = CallbackQueryHandler(
@@ -228,7 +234,13 @@ class Application:
         configure_logging(settings.LOGGING)
 
     def provide_application_builder(self: 'Self') -> 'ApplicationBuilder':  # type: ignore[type-arg]
-        """Return a native application builder."""
+        """Return a native application builder.
+
+        Returns
+        -------
+            Native application builder.
+
+        """
         from hammett.conf import settings
 
         return NativeApplication.builder().read_timeout(

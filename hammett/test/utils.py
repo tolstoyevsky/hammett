@@ -60,7 +60,13 @@ class TestContextDecorator:
         self.kwarg_name = kwarg_name
 
     def __enter__(self: 'Self') -> 'Any':
-        """Invoke when execution enters the context of the with statement."""
+        """Invoke when execution enters the context of the with statement.
+
+        Returns
+        -------
+            Call to the `enable` method.
+
+        """
         return self.enable()
 
     def __exit__(
@@ -81,7 +87,13 @@ class TestContextDecorator:
         raise NotImplementedError
 
     def decorate_callable(self: 'Self', func: 'Func') -> 'Callable[..., Any | Awaitable[Any]]':
-        """Decorate either a coroutine or a function."""
+        """Decorate either a coroutine or a function.
+
+        Returns
+        -------
+            Decorated coroutine or function.
+
+        """
         if asyncio.iscoroutinefunction(func):
             # If the inner function is an async function, we must execute async
             # as well so that the `with` statement executes at the right time.
@@ -104,7 +116,13 @@ class TestContextDecorator:
         return inner
 
     def __call__(self: 'Self', decorated: 'Func') -> 'Callable[..., Any] | Awaitable[Any]':
-        """Wrap the specified coroutine or function, and invoke the decorator."""
+        """Wrap the specified coroutine or function, and invoke the decorator.
+
+        Returns
+        -------
+            Wrapped specified coroutine or function.
+
+        """
         if callable(decorated):
             return self.decorate_callable(decorated)
 
@@ -123,7 +141,13 @@ class catch_render_config(TestContextDecorator):  # noqa: N801
         super().__init__(kwarg_name='actual')
 
     def enable(self: 'Self') -> 'Self':
-        """Invoke when execution enters the context of the `with` statement."""
+        """Invoke when execution enters the context of the `with` statement.
+
+        Returns
+        -------
+            Instance of the catch_render_config.
+
+        """
         self.mock = self.hook_patcher.start()
         return self
 

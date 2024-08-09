@@ -61,7 +61,13 @@ class Screen:
             self._initialized = True
 
     def __new__(cls: type['Screen'], *args: 'Any', **kwargs: 'Any') -> 'Screen':
-        """Implement the singleton pattern."""
+        """Implement the singleton pattern.
+
+        Returns
+        -------
+            Instance of the screen.
+
+        """
         if not cls._instance:
             cls._instance = super().__new__(cls, *args, **kwargs)
 
@@ -77,7 +83,13 @@ class Screen:
         context: 'CallbackContext[BT, UD, CD, BD]',
         config: 'RenderConfig | None',
     ) -> 'FinalRenderConfig':
-        """Finalize an object of RenderConfig returning an object of FinalRenderConfig."""
+        """Finalize an object of RenderConfig returning an object of FinalRenderConfig.
+
+        Returns
+        -------
+            Finalized object of RenderConfig.
+
+        """
         final_config = FinalRenderConfig(**asdict(config)) if config else FinalRenderConfig()
         final_config.cache_covers = (
             final_config.cache_covers or await self.get_cache_covers(update, context)
@@ -158,7 +170,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'Keyboard':
-        """Set up the default keyboard for the screen."""
+        """Set up the default keyboard for the screen.
+
+        Returns
+        -------
+            Keyboard for the screen.
+
+        """
         return EMPTY_KEYBOARD
 
     async def get_cache_covers(
@@ -166,7 +184,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> bool:
-        """Return the `cache_covers` attribute of the screen."""
+        """Return the `cache_covers` attribute of the screen.
+
+        Returns
+        -------
+            `Cache_covers` attribute of the screen.
+
+        """
         return self.cache_covers
 
     async def get_config(
@@ -175,7 +199,13 @@ class Screen:
         _context: 'CallbackContext[BT, UD, CD, BD]',
         **_kwargs: 'Any',
     ) -> 'RenderConfig':
-        """Return the Screen's config."""
+        """Return the Screen's config.
+
+        Returns
+        -------
+            Screen's config.
+
+        """
         return RenderConfig()
 
     async def get_cover(
@@ -183,7 +213,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'str | PathLike[str]':
-        """Return the `cover` attribute of the screen."""
+        """Return the `cover` attribute of the screen.
+
+        Returns
+        -------
+            `Cover` attribute of the screen.
+
+        """
         return self.cover
 
     async def get_current_state(
@@ -191,7 +227,13 @@ class Screen:
         _update: 'Update | None',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'State':
-        """Return the current state."""
+        """Return the current state.
+
+        Returns
+        -------
+            Current state.
+
+        """
         return cast('State', context.user_data.get('current_state'))  # type: ignore[union-attr]
 
     async def get_description(
@@ -199,7 +241,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> str:
-        """Return the `description` attribute of the screen."""
+        """Return the `description` attribute of the screen.
+
+        Returns
+        -------
+            `Description` attribute of the screen.
+
+        """
         return self.description
 
     async def get_document(
@@ -207,7 +255,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'Document | None':
-        """Return the `document` attribute of the screen."""
+        """Return the `document` attribute of the screen.
+
+        Returns
+        -------
+            `Document` attribute of the screen.
+
+        """
         return self.document
 
     async def get_hide_keyboard(
@@ -215,7 +269,13 @@ class Screen:
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> bool:
-        """Return the `hide_keyboard` attribute of the screen."""
+        """Return the `hide_keyboard` attribute of the screen.
+
+        Returns
+        -------
+            `Hide_keyboard` attribute of the screen.
+
+        """
         return self.hide_keyboard
 
     @staticmethod
@@ -223,7 +283,13 @@ class Screen:
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> str:
-        """Return the payload passed through the pressed button."""
+        """Return the payload passed through the pressed button.
+
+        Returns
+        -------
+            Payload of the button.
+
+        """
         query = await get_callback_query(update)
 
         data = getattr(query, 'data', None)
@@ -264,7 +330,13 @@ class Screen:
         context: 'CallbackContext[BT, UD, CD, BD]',
         **kwargs: 'Any',
     ) -> 'State':
-        """Switch to the screen sending it as a new message."""
+        """Switch to the screen sending it as a new message.
+
+        Returns
+        -------
+            State after jumping to the screen.
+
+        """
         config = await self.get_config(update, context, **kwargs)
         config.as_new_message = True
 
@@ -277,7 +349,13 @@ class Screen:
         context: 'CallbackContext[BT, UD, CD, BD]',
         **kwargs: 'Any',
     ) -> 'State':
-        """Switch to the screen re-rendering the previous message."""
+        """Switch to the screen re-rendering the previous message.
+
+        Returns
+        -------
+            State after moving to the screen.
+
+        """
         config = await self.get_config(update, context, **kwargs)
 
         await self.render(update, context, config=config)
@@ -290,7 +368,13 @@ class Screen:
         config: 'RenderConfig | None' = None,
         **kwargs: 'Any',
     ) -> 'State':
-        """Send the screen to the specified chat."""
+        """Send the screen to the specified chat.
+
+        Returns
+        -------
+            State after sending the screen.
+
+        """
         config = config or RenderConfig()
         config.as_new_message = True
 

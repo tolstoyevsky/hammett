@@ -33,7 +33,13 @@ class SingleChoiceWidget(BaseChoiceWidget):
         choices: 'Choices',
         **_kwargs: 'Any',
     ) -> 'InitializedChoices':
-        """Initialize choices."""
+        """Initialize choices.
+
+        Returns
+        -------
+            Initialized choices.
+
+        """
         initial_value = await self.get_initial_value(update, context)
         if initial_value is not None:
             initialized_choices = [
@@ -57,7 +63,13 @@ class SingleChoiceWidget(BaseChoiceWidget):
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> str | None:
-        """Return the `initial_value` attribute of the widget."""
+        """Return the `initial_value` attribute of the widget.
+
+        Returns
+        -------
+            `Initial_value` attribute of the widget.
+
+        """
         return self.initial_value
 
     async def switch(
@@ -66,7 +78,13 @@ class SingleChoiceWidget(BaseChoiceWidget):
         context: 'CallbackContext[BT, UD, CD, BD]',
         selected_choice: 'Choice',
     ) -> 'InitializedChoices':
-        """Switch the widget from one state to another."""
+        """Switch the widget from one state to another.
+
+        Returns
+        -------
+            New state of the widget after switching it.
+
+        """
         current_choices = await self.get_initialized_choices(update, context)
 
         return tuple(

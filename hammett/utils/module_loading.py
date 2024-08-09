@@ -39,6 +39,11 @@ def import_string(dotted_path: str) -> type['Any']:
     """Import a dotted module path and return the attribute/class
     designated by the last name in the path.
     Raise `ImportError` if the import failed.
+
+    Returns
+    -------
+        Object getting by passed dotted path.
+
     """
     try:
         module_path, class_name = dotted_path.rsplit('.', 1)

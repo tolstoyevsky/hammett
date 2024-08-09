@@ -31,7 +31,13 @@ class _Encoder(json.JSONEncoder):
     """The class implements a custom encoder."""
 
     def default(self: 'Self', obj: 'Any') -> 'Any':
-        """Handle encoding some objects that cannot be serialized into JSON."""
+        """Handle encoding some objects that cannot be serialized into JSON.
+
+        Returns
+        -------
+            Encoded object.
+
+        """
         if isinstance(obj, Path):
             return str(obj)
 
@@ -86,7 +92,13 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
 
     @staticmethod
     def _decode_conversations(json_string: str) -> dict[str, dict[tuple[str | int, ...], object]]:
-        """Decode a conversations dict (that uses tuples as keys) from a JSON-string."""
+        """Decode a conversations dict (that uses tuples as keys) from a JSON-string.
+
+        Returns
+        -------
+            Decoded conversations dict.
+
+        """
         conversations: dict[str, dict[tuple[str | int, ...], object]] = {}
 
         tmp = json.loads(json_string)
@@ -101,6 +113,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
     def _encode_conversations(conversations: dict[str, dict[tuple[str | int, ...], object]]) -> str:
         """Encode a conversations dict (that uses tuples as keys) to a
         JSON-serializable way.
+
+        Returns
+        -------
+            Encoded conversations dict.
+
         """
         tmp: dict[str, JSONDict] = {}
         for handler, states in conversations.items():
@@ -111,7 +128,13 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
         return json.dumps(tmp, cls=_Encoder)
 
     async def _get_data(self: 'Self', key: str) -> 'Any':
-        """Fetch the data from the database by the specified key."""
+        """Fetch the data from the database by the specified key.
+
+        Returns
+        -------
+            Encoded data from the database.
+
+        """
         try:
             redis_data = await self.redis_cli.get(key)
             if redis_data:
@@ -123,7 +146,13 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
             return redis_data
 
     def _decode_data(self: 'Self', data: dict[str, bytes]) -> dict[int, 'CD | UD']:
-        """Return decoded data."""
+        """Return decoded data.
+
+        Returns
+        -------
+            Decoded data.
+
+        """
         decoded_data = {}
         for key, val in data.items():
             decoded_data[int(key)] = json.loads(val)
@@ -135,7 +164,13 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
         await self.redis_cli.hdel(key, str(user_id))
 
     async def _hgetall_by_chunks(self: 'Self', key: str) -> dict[str, bytes]:
-        """Return hash type of the data from the database."""
+        """Return hash type of the data from the database.
+
+        Returns
+        -------
+            Hash type of the data from the database.
+
+        """
         data = {}
         encoded_keys = await self.redis_cli.hkeys(key)
         for encoded_key in encoded_keys:
@@ -219,6 +254,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
         """Return the bot data from the database, if it exists,
         or an empty object of the type `telegram.ext.ContextTypes.bot_data`
         otherwise.
+
+        Returns
+        -------
+            Bot data from the database.
+
         """
         if not self.bot_data:
             data = await self._get_data(self._BOT_DATA_KEY) or self.context_types.bot_data()
@@ -230,6 +270,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
     async def get_callback_data(self: 'Self') -> 'CDCData | None':
         """Return the callback data from the database, if it exists,
         or None otherwise.
+
+        Returns
+        -------
+            Callback data from the database.
+
         """
         if not self.callback_data:
             data = await self._get_data(self._CALLBACK_DATA_KEY)
@@ -246,6 +291,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
     async def get_chat_data(self: 'Self') -> dict[int, 'CD']:
         """Return the chat data from the database, if it exists,
         or an empty dict otherwise.
+
+        Returns
+        -------
+            Chat data from the database.
+
         """
         if not self.chat_data:
             data = await self._hgetall_by_chunks(self._CHAT_DATA_KEY)
@@ -256,6 +306,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
     async def get_conversations(self: 'Self', name: str) -> 'ConversationDict':
         """Return the conversations from the database, if it exists,
         or an empty dict otherwise.
+
+        Returns
+        -------
+            Conversations from the database.
+
         """
         if not self.conversations:
             conversations = await self.redis_cli.get(self._CONVERSATIONS_KEY)
@@ -268,6 +323,11 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
     async def get_user_data(self: 'Self') -> dict[int, 'UD']:
         """Return the user data from the database, if it exists,
         or an empty dict otherwise.
+
+        Returns
+        -------
+            User data from the database.
+
         """
         if not self.user_data:
             data = await self._hgetall_by_chunks(self._USER_DATA_KEY)

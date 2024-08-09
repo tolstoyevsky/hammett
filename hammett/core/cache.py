@@ -20,7 +20,13 @@ CACHE_REDIS_CLI: 'redis.Redis[Any]' = redis.Redis(
 
 
 def cache(ttl: int) -> 'Callable[[Any], Any]':
-    """Cache the result of the decorated function."""
+    """Cache the result of the decorated function.
+
+    Returns
+    -------
+        Wrapped decorated function.
+
+    """
     def decorator(func: 'Callable[[Any], Any]') -> 'Callable[[Any], Any]':
         try:
             settings.REDIS_CACHE['DB']

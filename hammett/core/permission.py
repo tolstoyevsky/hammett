@@ -20,7 +20,13 @@ if TYPE_CHECKING:
 
 
 def apply_permission_to(handler: 'HandlerAlias') -> 'HandlerAlias':
-    """Apply permissions to the specified handler."""
+    """Apply permissions to the specified handler.
+
+    Returns
+    -------
+        Wrapped handler.
+
+    """
     from hammett.conf import settings
 
     handler_wrapped = cast('Handler', handler)
@@ -41,6 +47,11 @@ def ignore_permissions(
 ) -> 'Callable[[HandlerAlias], Handler]':
     """Decorate handlers (Screen methods) to specify which permissions
     they are allowed to ignore.
+
+    Returns
+    -------
+        Wrapped handler.
+
     """
 
     def decorator(func: 'HandlerAlias') -> 'Handler':
@@ -68,6 +79,11 @@ class Permission(Screen):
     def check_permission(self: 'Self', handler: 'Handler') -> 'Handler':
         """Check if there is a permission to invoke handlers (Screen methods).
         The method is invoked under the hood, so you should not run it directly.
+
+        Returns
+        -------
+            Wrapped handler.
+
         """
 
         @wraps(handler)

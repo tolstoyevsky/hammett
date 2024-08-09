@@ -55,7 +55,13 @@ _HAMMETT_SETTINGS_MODULE = 'HAMMETT_SETTINGS_MODULE'
 
 
 def new_method_proxy(func: 'Func') -> 'Any':
-    """Route functions to the _wrapped object."""
+    """Route functions to the _wrapped object.
+
+    Returns
+    -------
+        Wrapped passed functions.
+
+    """
     # It's necessary to use the wraps decorator when wrapping functions.
     # But not here. The point is that new_method_proxy is used mainly with
     # the magic methods which, as a rule, are not used directly. So, avoiding
@@ -75,11 +81,23 @@ class GlobalSettings:
     """
 
     def __getattr__(self: 'Self', name: str) -> 'Any':
-        """Return the value of a global setting."""
+        """Return the value of a global setting.
+
+        Returns
+        -------
+            Value of a global setting.
+
+        """
         return getattr(global_settings, name)
 
     def __repr__(self: 'Self') -> str:
-        """Return a system representation of a global setting."""
+        """Return a system representation of a global setting.
+
+        Returns
+        -------
+            System representation of a global setting.
+
+        """
         return f'<{self.__class__.__name__}>'
 
 
@@ -177,7 +195,13 @@ class LazySettings(LazyObject):
         self._wrapped = Settings(settings_module)
 
     def __repr__(self: 'Self') -> str:
-        """Return a system representation of a lazy setting."""
+        """Return a system representation of a lazy setting.
+
+        Returns
+        -------
+            System representation of a lazy setting.
+
+        """
         # Hardcode the class name as otherwise it yields 'Settings'.
         if self._wrapped is _EMPTY:
             return '<LazySettings [Unevaluated]>'
@@ -187,7 +211,13 @@ class LazySettings(LazyObject):
         )
 
     def __getattr__(self: 'Self', name: str) -> 'Any':
-        """Return the value of a setting and caches it in self.__dict__."""
+        """Return the value of a setting and caches it in self.__dict__.
+
+        Returns
+        -------
+            Value of a setting.
+
+        """
         if self._wrapped is _EMPTY:
             self._setup(name)
 
@@ -254,11 +284,23 @@ class Settings:
                 raise ImproperlyConfigured(msg)
 
     def _is_overridden(self: 'Self', setting: str) -> bool:
-        """Check if the specified setting is overriden."""
+        """Check if the specified setting is overriden.
+
+        Returns
+        -------
+            Result of checking the override of a setting.
+
+        """
         return setting in self._explicit_settings
 
     def __repr__(self: 'Self') -> str:
-        """Return a system representation of a setting."""
+        """Return a system representation of a setting.
+
+        Returns
+        -------
+            System representation of a setting.
+
+        """
         return f"<{self.__class__.__name__} '{self.settings_module_name}'>"
 
 

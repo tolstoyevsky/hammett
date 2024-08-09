@@ -113,7 +113,13 @@ class BaseWidget(Screen):
         chat_id: int = 0,
         message_id: int = 0,
     ) -> str:
-        """Return a widget state key."""
+        """Return a widget state key.
+
+        Returns
+        -------
+            Widget state key.
+
+        """
         if update:
             query = await get_callback_query(update)
             message = getattr(query, 'message', None)
@@ -136,6 +142,11 @@ class BaseWidget(Screen):
     ) -> 'Any | None':
         """Safely get the specified value from the widget state dictionary
         stored in user_data.
+
+        Returns
+        -------
+            Value from the widget state.
+
         """
         state_value = None
         if context.user_data:
@@ -179,7 +190,13 @@ class BaseWidget(Screen):
         _update: 'Update | None',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'Keyboard':
-        """Add an extra keyboard below the widget buttons."""
+        """Add an extra keyboard below the widget buttons.
+
+        Returns
+        -------
+            Extra keyboard below the widget buttons.
+
+        """
         return EMPTY_KEYBOARD
 
 
@@ -221,7 +238,13 @@ class BaseChoiceWidget(BaseWidget):
         choices: 'Choices | None' = None,
         **kwargs: 'Any',  # noqa: ARG002
     ) -> 'dict[Any, Any]':
-        """Return the post-initialization widget state to be saved in context."""
+        """Return the post-initialization widget state to be saved in context.
+
+        Returns
+        -------
+            Post-initialization widget state.
+
+        """
         return {
             'choices': choices or (),
         }
@@ -232,7 +255,13 @@ class BaseChoiceWidget(BaseWidget):
         context: 'CallbackContext[BT, UD, CD, BD]',
         choices: 'InitializedChoices',
     ) -> 'Keyboard':
-        """Build the keyboard based on the specified choices."""
+        """Build the keyboard based on the specified choices.
+
+        Returns
+        -------
+            Keyboard for the widget.
+
+        """
         if not len(choices):
             msg = f'{self.__class__.__name__} must specify at least one choice'
             raise NoChoicesSpecified(msg)
@@ -268,7 +297,13 @@ class BaseChoiceWidget(BaseWidget):
         choices: 'Choices | None' = None,
         **kwargs: 'Any',
     ) -> 'State':
-        """Initialize the widget."""
+        """Initialize the widget.
+
+        Returns
+        -------
+            State after widget initialization.
+
+        """
         current_choices = choices or await self.get_choices(update, context, **kwargs)
         initialized_choices = await self._initialize_choices(
             update,
@@ -300,7 +335,13 @@ class BaseChoiceWidget(BaseWidget):
         *_args: 'Any',
         **_kwargs: 'Any',
     ) -> 'State':
-        """Invoke when clicking on a choice."""
+        """Invoke when clicking on a choice.
+
+        Returns
+        -------
+            State after clicking on a choice.
+
+        """
         payload: dict[str, str] = json.loads(await self.get_payload(update, context))
 
         choices = await self.switch(update, context, (payload['code'], payload['name']))
@@ -325,7 +366,13 @@ class BaseChoiceWidget(BaseWidget):
         _context: 'CallbackContext[BT, UD, CD, BD]',
         **_kwargs: 'Any',
     ) -> 'Choices':
-        """Return the `choices` attribute of the widget."""
+        """Return the `choices` attribute of the widget.
+
+        Returns
+        -------
+            `Choices` attribute of the widget.
+
+        """
         return self.choices
 
     async def get_initialized_choices(
@@ -333,7 +380,13 @@ class BaseChoiceWidget(BaseWidget):
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'InitializedChoices':
-        """Return the initialized choices."""
+        """Return the initialized choices.
+
+        Returns
+        -------
+            Initialized choices.
+
+        """
         current_choices: InitializedChoices = await self.get_state_value(
             update,
             context,
@@ -347,7 +400,13 @@ class BaseChoiceWidget(BaseWidget):
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'InitializedChoices':
-        """Return the choices made by the user."""
+        """Return the choices made by the user.
+
+        Returns
+        -------
+            Choices made by the user.
+
+        """
         current_choices = await self.get_initialized_choices(update, context)
         return tuple(filter(operator.itemgetter(0), current_choices))
 
@@ -361,6 +420,11 @@ class BaseChoiceWidget(BaseWidget):
         In case of the choice widgets it is necessary to keep payload
         saved as all the choice buttons have the same payload though
         bot's running and popping of it leads to incorrect behaviour.
+
+        Returns
+        -------
+            Payload of the button.
+
         """
         query = await get_callback_query(update)
 
@@ -381,7 +445,13 @@ class BaseChoiceWidget(BaseWidget):
         context: 'CallbackContext[BT, UD, CD, BD]',
         **_kwargs: 'Any',
     ) -> 'State':
-        """Handle the case when the widget is used as StartScreen."""
+        """Handle the case when the widget is used as StartScreen.
+
+        Returns
+        -------
+            State after jumping to the widget.
+
+        """
         config = RenderConfig(as_new_message=True)
         return await self._init(update, context, config=config)
 
@@ -391,7 +461,13 @@ class BaseChoiceWidget(BaseWidget):
         context: 'CallbackContext[BT, UD, CD, BD]',
         **_kwargs: 'Any',
     ) -> 'State':
-        """Handle the case when the widget is passed to Button as `MOVE_SOURCE_TYPE`."""
+        """Handle the case when the widget is passed to Button as `MOVE_SOURCE_TYPE`.
+
+        Returns
+        -------
+            State after moving to the widget.
+
+        """
         return await self._init(update, context)
 
     async def send(
@@ -402,7 +478,13 @@ class BaseChoiceWidget(BaseWidget):
         choices: 'Choices | None' = None,
         **_kwargs: 'Any',
     ) -> 'State':
-        """Handle the case when the widget is used as a notification."""
+        """Handle the case when the widget is used as a notification.
+
+        Returns
+        -------
+            State after sending the widget.
+
+        """
         config = config or RenderConfig()
         config.as_new_message = True
 

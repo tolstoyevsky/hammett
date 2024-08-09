@@ -17,7 +17,13 @@ class StartMarker:
         self._parse()
 
     def __getitem__(self: 'Self', item: str) -> str:
-        """Return an element by a key."""
+        """Return an element by a key.
+
+        Returns
+        -------
+            Element by a passed key.
+
+        """
         return self._result[item]
 
     def _parse(self: 'Self') -> None:

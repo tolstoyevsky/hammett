@@ -7,7 +7,13 @@ if TYPE_CHECKING:
 
 
 async def get_callback_query(update: 'Update') -> 'CallbackQuery | None':
-    """Get CallbackQuery from Update."""
+    """Get CallbackQuery from Update.
+
+    Returns
+    -------
+        CallbackQuery from Update.
+
+    """
     query = update.callback_query
     # CallbackQueries need to be answered, even if no notification to the user is needed.
     # Some clients may have trouble otherwise.

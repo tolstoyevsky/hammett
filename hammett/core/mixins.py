@@ -36,7 +36,14 @@ class RouteMixin(Screen):
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'State':
-        """Return the first found state in the routes."""
+        """Return the first found state in the routes.
+
+        Returns
+        -------
+            First found state in the states declared in a `routes`
+            attribute of the mixin.
+
+        """
         current_state = await self.get_current_state(update, context)
 
         if self.routes:
@@ -55,6 +62,11 @@ class RouteMixin(Screen):
     ) -> 'State':
         """Change the state and switch to the screen sending
         it as a new message.
+
+        Returns
+        -------
+            State after jumping to the screen.
+
         """
         config = await self.get_config(update, context, **kwargs)
         config.as_new_message = True
@@ -70,6 +82,11 @@ class RouteMixin(Screen):
     ) -> 'State':
         """Change the state and switch to the screen re-rendering
         the previous message.
+
+        Returns
+        -------
+            State after moving to the screen.
+
         """
         config = await self.get_config(update, context, **kwargs)
 
@@ -85,5 +102,11 @@ class StartMixin(Screen):
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> 'State':
-        """Invoke on the /start command."""
+        """Invoke on the /start command.
+
+        Returns
+        -------
+            State after invoking /start command.
+
+        """
         return await self.jump(update, context)

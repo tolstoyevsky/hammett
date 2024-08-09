@@ -2,7 +2,13 @@
 
 
 def render(template: str, context: dict[str, str]) -> str:
-    """Return a description after formatting it using passed tags."""
+    """Return a description after formatting it using passed tags.
+
+    Returns
+    -------
+        Formatted description.
+
+    """
     description = template
     for key, val in context.items():
         description = description.replace(f'{{{key}}}', str(val))

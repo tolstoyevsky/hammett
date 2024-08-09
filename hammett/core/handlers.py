@@ -26,6 +26,11 @@ def _clear_command_name(command_name: str) -> str:
     """Clear the specified command name.
 
     Raise `CommandNameIsEmpty` if the name either is empty or consists only of '/'.
+
+    Returns
+    -------
+        Cleared command name.
+
     """
     if command_name and command_name[0] == '/':
         command_name = command_name[1:]
@@ -37,7 +42,13 @@ def _clear_command_name(command_name: str) -> str:
 
 
 def _get_handler_name(handler: 'Handler') -> str:
-    """Return the full name of the specified handler."""
+    """Return the full name of the specified handler.
+
+    Returns
+    -------
+        Full name of the specified handler.
+
+    """
     try:
         return f'{type(handler.__self__).__name__}.{handler.__name__}'
     except AttributeError:  # when a handler is static
@@ -48,7 +59,13 @@ def _register_handler(
     name: str,
     value: HandlerType,
 ) -> 'Callable[[str], Callable[[HandlerAlias], Handler]]':
-    """Set the specified attribute of the decorated handler."""
+    """Set the specified attribute of the decorated handler.
+
+    Returns
+    -------
+        Wrapped handler.
+
+    """
 
     def create_decorator(
         command_name: str = '',
@@ -82,7 +99,13 @@ def _register_handler(
 
 
 def calc_checksum(obj: 'Any') -> str:
-    """Calculate a checksum of the specified object."""
+    """Calculate a checksum of the specified object.
+
+    Returns
+    -------
+        Calculated checksum of the specified object.
+
+    """
     if callable(obj):  # in a case of a handler
         handler_name = _get_handler_name(obj)
         return str(zlib.adler32(handler_name.encode('utf8')))
@@ -94,7 +117,13 @@ def calc_checksum(obj: 'Any') -> str:
 
 
 def get_payload_storage(context: 'CallbackContext[BT, UD, CD, BD]') -> 'PayloadStorage':
-    """Return the payload storage."""
+    """Return the payload storage.
+
+    Returns
+    -------
+        Payload storage.
+
+    """
     from hammett.conf import settings
     namespace = settings.PAYLOAD_NAMESPACE
     bot_data = cast('dict[str, PayloadStorage]', context.bot_data)

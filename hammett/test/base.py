@@ -64,7 +64,13 @@ class TestBot(Bot):
         connect_timeout: 'ODVInput[float]' = DEFAULT_NONE,  # noqa: ARG002
         pool_timeout: 'ODVInput[float]' = DEFAULT_NONE,  # noqa: ARG002
     ) -> 'bool | JSONDict | list[JSONDict]':
-        """Override the method not to send any request."""
+        """Override the method not to send any request.
+
+        Returns
+        -------
+            Mock of sending request.
+
+        """
         return {
             'message_id': 1,
             'from_user': 1,
@@ -108,11 +114,23 @@ class BaseTestCase(unittest.TestCase):
         super().__call__(result)
 
     def get_chat(self) -> 'Chat':
-        """Return the `Chat` object for testing purposes."""
+        """Return the `Chat` object for testing purposes.
+
+        Returns
+        -------
+            `Chat` object.
+
+        """
         return Chat(self.chat_id, ChatType.PRIVATE)
 
     def get_context(self) -> 'CallbackContext':  # type: ignore[type-arg]
-        """Return the `CallbackContext` object for testing purposes."""
+        """Return the `CallbackContext` object for testing purposes.
+
+        Returns
+        -------
+            `CallbackContext` object.
+
+        """
         return CallbackContext(
             self.get_native_application(),
             chat_id=self.chat_id,
@@ -120,7 +138,13 @@ class BaseTestCase(unittest.TestCase):
         )
 
     def get_message(self) -> 'Message':
-        """Return the `Message` object for testing purposes."""
+        """Return the `Message` object for testing purposes.
+
+        Returns
+        -------
+            `Message` object.
+
+        """
         return Message(
             self.message_id,
             datetime.now(tz=timezone.utc),
@@ -129,7 +153,13 @@ class BaseTestCase(unittest.TestCase):
         )
 
     def get_native_application(self) -> 'Application':  # type: ignore[type-arg]
-        """Return the `Application` object for testing purposes."""
+        """Return the `Application` object for testing purposes.
+
+        Returns
+        -------
+            `Application` object.
+
+        """
         return ApplicationBuilder().bot(
             TestBot(token=settings.TOKEN),
         ).concurrent_updates(
@@ -137,11 +167,23 @@ class BaseTestCase(unittest.TestCase):
         ).application_class(Application).build()
 
     def get_update(self) -> 'Update':
-        """Return the `Update` object for testing purposes."""
+        """Return the `Update` object for testing purposes.
+
+        Returns
+        -------
+            `Update` object.
+
+        """
         return Update(self.update_id, message=self.message)
 
     def get_user(self) -> 'User':
-        """Return the `User` object for testing purposes."""
+        """Return the `User` object for testing purposes.
+
+        Returns
+        -------
+            `User` object.
+
+        """
         return User(self.user_id, 'TestUser', is_bot=False)
 
     def prepare_final_render_config(
@@ -150,6 +192,11 @@ class BaseTestCase(unittest.TestCase):
     ) -> 'FinalRenderConfig':
         """Transform `FinalRenderConfig` from `RenderConfig` if `RenderConfig` is provided,
         and pass the chat id to `FinalRenderConfig` for future assertions in tests.
+
+        Returns
+        -------
+            Ready `FinalRenderConfig` object.
+
         """
         if not isinstance(config, FinalRenderConfig):
             # The default keyboard needs to be replaced when casting to FinalRenderConfig.

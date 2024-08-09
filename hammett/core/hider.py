@@ -30,18 +30,36 @@ class Hider:
         self.hiders_set: set[int] = {hider}
 
     def __eq__(self, other: object) -> bool:
-        """Compare two Hider objects."""
+        """Compare two Hider objects.
+
+        Returns
+        -------
+            Result of comparing two Hider objects.
+
+        """
         if not isinstance(other, Hider):
             return super().__eq__(other)
 
         return self.hider == other.hider and self.hiders_set == other.hiders_set
 
     def __hash__(self) -> int:
-        """Return object hash."""
+        """Return object hash.
+
+        Returns
+        -------
+            Object hash.
+
+        """
         return hash((self.hider, self.hiders_set))
 
     def __or__(self: 'Self', other: 'Hider') -> 'Self':
-        """Perform `or` operation."""
+        """Perform `or` operation.
+
+        Returns
+        -------
+            Instance of the hider.
+
+        """
         self.hiders_set.add(other.hider)
         return self
 
@@ -79,7 +97,13 @@ class HidersChecker:
         _update: 'Update',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> bool:
-        """Represent a stub for checking whether the user is an admin."""
+        """Represent a stub for checking whether the user is an admin.
+
+        Returns
+        -------
+            Result of checking whether the user is an admin.
+
+        """
         return False
 
     async def is_beta_tester(
@@ -87,7 +111,13 @@ class HidersChecker:
         _update: 'Update',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> bool:
-        """Represent a stub for checking whether the user is a beta tester."""
+        """Represent a stub for checking whether the user is a beta tester.
+
+        Returns
+        -------
+            Result of checking whether the user is a beta tester.
+
+        """
         return False
 
     async def is_moderator(
@@ -95,7 +125,13 @@ class HidersChecker:
         _update: 'Update',
         _context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> bool:
-        """Represent a stub for checking whether the user is a moderator."""
+        """Represent a stub for checking whether the user is a moderator.
+
+        Returns
+        -------
+            Result of checking whether the user is a moderator.
+
+        """
         return False
 
     async def run(
@@ -107,6 +143,11 @@ class HidersChecker:
         The hiders are combined into chains using the OR operator, so the method
         returns True if any of the checks is True.
         The method is invoked under the hood, so you should not run it directly.
+
+        Returns
+        -------
+            True if any of the HiderChecker checks are True.
+
         """
         for hider in self._hiders_set:
             try:
