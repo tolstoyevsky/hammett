@@ -53,6 +53,11 @@ class Renderer:
         -------
             Object of the `InputMediaDocument` type with passed attributes.
 
+        Raises
+        ------
+            ScreenDocumentDataIsEmpty: If the `media` attribute of the `Document`
+            type object is empty.
+
         """
         try:
             media = document['media']

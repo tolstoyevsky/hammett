@@ -89,6 +89,10 @@ class Screen:
         -------
             Finalized object of RenderConfig.
 
+        Raises
+        ------
+            ScreenDescriptionIsEmpty: If the `description` attribute of the screen is empty.
+
         """
         final_config = FinalRenderConfig(**asdict(config)) if config else FinalRenderConfig()
         final_config.cache_covers = (
@@ -288,6 +292,11 @@ class Screen:
         Returns
         -------
             Payload of the button.
+
+        Raises
+        ------
+            FailedToGetDataAttributeOfQuery: If the query object does not have any data.
+            PayloadIsEmpty: If the attempt to retrieve the payload fails.
 
         """
         query = await get_callback_query(update)

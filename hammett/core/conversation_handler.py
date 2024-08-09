@@ -63,6 +63,11 @@ class ConversationHandler(NativeConversationHandler['Any']):
         -------
             Object or None.
 
+        Raises
+        ------
+            ApplicationHandlerStop: If it's necessary to prevent the execution of any other handler
+            (even in different groups).
+
         """
         current_state, conversation_key, handler, handler_check_result = check_result
         raise_dp_handler_stop = False

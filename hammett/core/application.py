@@ -58,7 +58,13 @@ class Application:
         persistence: 'BasePersistence[UD, CD, BD] | None' = None,
         states: 'States | None' = None,
     ) -> None:
-        """Initialize an application object."""
+        """Initialize an application object.
+
+        Raises
+        ------
+            TokenIsNotSpecified: If the `TOKEN` attribute in the settings is not specified.
+
+        """
         from hammett.conf import settings
 
         if not settings.TOKEN:
@@ -105,6 +111,10 @@ class Application:
         Returns
         -------
             Handler object.
+
+        Raises
+        ------
+            UnknownHandlerType: If the handler type is unknown.
 
         """
         handler_object: CallbackQueryHandler[Any] | MessageHandler[Any]
@@ -156,7 +166,14 @@ class Application:
         self: 'Self',
         job_configs: 'list[JobConfig] | None' = None,
     ) -> None:
-        """Register the specified job queue handlers."""
+        """Register the specified job queue handlers.
+
+        Raises
+        ------
+            CallbackNotProvided: If `callback` of `JobConfig` is not provided.
+            JobKwargsNotProvided: If `job_kwargs` of `JobConfig` is not provided.
+
+        """
         if job_configs is not None:
             job_queue = self._native_application.job_queue
             for i, job_config in enumerate(job_configs):

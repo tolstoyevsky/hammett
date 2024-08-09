@@ -122,6 +122,10 @@ class TestContextDecorator:
         -------
             Wrapped specified coroutine or function.
 
+        Raises
+        ------
+            TypeError: If the provided type of object is not callable.
+
         """
         if callable(decorated):
             return self.decorate_callable(decorated)

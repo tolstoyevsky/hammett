@@ -31,6 +31,10 @@ def _clear_command_name(command_name: str) -> str:
     -------
         Cleared command name.
 
+    Raises
+    ------
+        CommandNameIsEmpty: If the provided command name is empty.
+
     """
     if command_name and command_name[0] == '/':
         command_name = command_name[1:]
@@ -104,6 +108,10 @@ def calc_checksum(obj: 'Any') -> str:
     Returns
     -------
         Calculated checksum of the specified object.
+
+    Raises
+    ------
+        TypeError: If the provided object is neither a handler nor a button caption.
 
     """
     if callable(obj):  # in a case of a handler

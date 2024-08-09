@@ -97,7 +97,13 @@ class Button:
         ))
 
     def _check_source(self: 'Self') -> None:
-        """Check if the source is valid. If it's invalid, the method raises `TypeError`."""
+        """Check if the source is valid.
+
+        Raises
+        ------
+            TypeError: If the source of the button is invalid.
+
+        """
         from hammett.core.screen import Screen
 
         if self.source_type in _SHORTCUT_SOURCES_TYPES:
@@ -188,6 +194,10 @@ class Button:
         Returns
         -------
             Object of the `InlineKeyboardButton` type.
+
+        Raises
+        ------
+            UnknownSourceType: If the source type of the button is unknown.
 
         """
         visibility = await self._specify_visibility(update, context)

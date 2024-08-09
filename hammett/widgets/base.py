@@ -52,7 +52,13 @@ class BaseWidget(Screen):
         config: 'FinalRenderConfig',
         **kwargs: 'Any',
     ) -> None:
-        """Save to user_data initialized state after screen rendering if it's new message."""
+        """Save to user_data initialized state after screen rendering if it's new message.
+
+        Raises
+        ------
+            MissingPersistence: If the widgets are used in jobs with no specified persistence.
+
+        """
         await super()._post_render(update, context, message, config, **kwargs)
 
         if isinstance(message, tuple):
@@ -118,6 +124,10 @@ class BaseWidget(Screen):
         Returns
         -------
             Widget state key.
+
+        Raises
+        ------
+            FailedToGetStateKey: If the query object does not have any message.
 
         """
         if update:
@@ -208,7 +218,14 @@ class BaseChoiceWidget(BaseWidget):
     unchosen_emoji: str = ''
 
     def __init__(self: 'Self') -> None:
-        """Initialize a base choice widget object."""
+        """Initialize a base choice widget object.
+
+        Raises
+        ------
+            ChoiceEmojisAreUndefined: If the `chosen_emoji` or `unchosen_emoji` attributes
+            are not specified.
+
+        """
         super().__init__()
 
         if not self.chosen_emoji or not self.unchosen_emoji:
@@ -260,6 +277,11 @@ class BaseChoiceWidget(BaseWidget):
         Returns
         -------
             Keyboard for the widget.
+
+        Raises
+        ------
+            ChoicesFormatIsInvalid: If the type of the `choices` attribute is not correct.
+            NoChoicesSpecified: If the `choices` attribute is not specified.
 
         """
         if not len(choices):
@@ -424,6 +446,11 @@ class BaseChoiceWidget(BaseWidget):
         Returns
         -------
             Payload of the button.
+
+        Raises
+        ------
+            FailedToGetDataAttributeOfQuery: If the query object does not have any data.
+            PayloadIsEmpty: If the attempt to retrieve the payload fails.
 
         """
         query = await get_callback_query(update)

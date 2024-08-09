@@ -24,7 +24,13 @@ class RouteMixin(Screen):
     routes: 'Routes | None' = None
 
     def __init__(self: 'Self') -> None:
-        """Initialize a route mixin object."""
+        """Initialize a route mixin object.
+
+        Raises
+        ------
+            ScreenRouteIsEmpty: If the `routes` attribute of the mixin is empty.
+
+        """
         super().__init__()
 
         if self.routes is None:

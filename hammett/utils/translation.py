@@ -13,6 +13,10 @@ def gettext(caption: str, language: str = settings.LANGUAGE_CODE) -> str:
     -------
         Translated text by its caption.
 
+    Raises
+    ------
+        LocalePathIsNotSpecified: If the `LOCALE_PATH` attribute of settings is not specified.
+
     """
     if not settings.LOCALE_PATH:
         raise LocalePathIsNotSpecified
