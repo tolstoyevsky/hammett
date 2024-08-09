@@ -17,7 +17,13 @@ def get_latest_message(
     context: 'CallbackContext[BT, UD, CD, BD]',
     message: 'Message',
 ) -> 'LatestMessage | None':
-    """Return the latest sent message info."""
+    """Return the latest sent message info.
+
+    Returns
+    -------
+        Latest sent message info.
+
+    """
     state: LatestMessage | None = None
     try:
         state = context.user_data[LATEST_SENT_MSG_KEY]  # type: ignore[index]

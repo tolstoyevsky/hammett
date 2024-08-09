@@ -65,7 +65,13 @@ class Button:
     #
 
     def __eq__(self, other: object) -> bool:
-        """Compare two Button objects."""
+        """Compare two Button objects.
+
+        Returns
+        -------
+            Result of comparing two Button objects.
+
+        """
         if not isinstance(other, Button):
             return super().__eq__(other)
 
@@ -79,7 +85,13 @@ class Button:
         )
 
     def __hash__(self) -> int:
-        """Return the object hash."""
+        """Return the object hash.
+
+        Returns
+        -------
+            Object hash.
+
+        """
         return hash((
             self.caption, self.source, self.source_type, self.hiders, self.payload, self.chat_id,
         ))
@@ -123,7 +135,13 @@ class Button:
         update: 'Update | None',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> int | None:
-        """Obtain the user ID from either an Update object or a CallbackContext object."""
+        """Obtain the user ID from either an Update object or a CallbackContext object.
+
+        Returns
+        -------
+            ID of the user.
+
+        """
         if update is None:
             return context._user_id  # noqa: SLF001
 
@@ -165,7 +183,13 @@ class Button:
         update: 'Update | None',
         context: 'CallbackContext[BT, UD, CD, BD]',
     ) -> tuple[InlineKeyboardButton, bool]:
-        """Create the button."""
+        """Create the button.
+
+        Returns
+        -------
+            Object of the `InlineKeyboardButton` type.
+
+        """
         visibility = await self._specify_visibility(update, context)
 
         if self.source_type in _HANDLER_SOURCES_TYPES:
