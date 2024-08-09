@@ -32,8 +32,8 @@ ignore = [
 inline-quotes = "single"
 
 [lint.per-file-ignores]
-"demos/*" = ["ANN"]
-"tests/*" = ["ANN"]
+"demos/*" = ["ANN", "DOC"]
+"tests/*" = ["ANN", "DOC"]
 
 [lint.pylint]
 max-args = 7
