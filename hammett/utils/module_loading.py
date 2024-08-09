@@ -44,6 +44,11 @@ def import_string(dotted_path: str) -> type['Any']:
     -------
         Object getting by passed dotted path.
 
+    Raises
+    ------
+        ImportError: If the provided dotted path does not look like a module path.
+        ImportError: If the module does not define the specified attribute/class.
+
     """
     try:
         module_path, class_name = dotted_path.rsplit('.', 1)

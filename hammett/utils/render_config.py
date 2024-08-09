@@ -45,7 +45,14 @@ async def save_latest_message(
     config: 'FinalRenderConfig',
     message: 'Message',
 ) -> None:
-    """Save the latest message info."""
+    """Save the latest message info.
+
+    Raises
+    ------
+        MissingPersistence: If the attempt to save the latest message information fails because
+        the message was sent via a job.
+
+    """
     latest_msg = {
         'hide_keyboard': config.hide_keyboard,
         'message_id': message.message_id,

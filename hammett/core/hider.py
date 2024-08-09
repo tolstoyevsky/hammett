@@ -148,6 +148,10 @@ class HidersChecker:
         -------
             True if any of the HiderChecker checks are True.
 
+        Raises
+        ------
+            HiderIsUnregistered: If the implemented hider is not registered.
+
         """
         for hider in self._hiders_set:
             try:

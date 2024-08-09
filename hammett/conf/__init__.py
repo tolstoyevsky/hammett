@@ -134,7 +134,13 @@ class LazyObject:
             setattr(self._wrapped, name, value)
 
     def __delattr__(self: 'Self', name: str) -> None:
-        """Delete a lazy object."""
+        """Delete a lazy object.
+
+        Raises
+        ------
+            TypeError: If the name of the provided object to be deleted is '_wrapped'.
+
+        """
         if name == '_wrapped':
             msg = "can't delete _wrapped."
             raise TypeError(msg)
@@ -180,6 +186,12 @@ class LazySettings(LazyObject):
         """Load the settings module specified via the HAMMETT_SETTINGS_MODULE
         environment variable. This is used the first time settings are needed,
         if the user hasn't configured settings manually.
+
+        Raises
+        ------
+            ImproperlyConfigured: If the `HAMMETT_SETTINGS_MODULE` environment variable
+            is not specified.
+
         """
         settings_module = os.environ.get(_HAMMETT_SETTINGS_MODULE)
         if not settings_module:
@@ -270,7 +282,15 @@ class Settings:
         self._check()
 
     def _check(self: 'Self') -> None:
-        """Check the settings for gross errors."""
+        """Check the settings for gross errors.
+
+        Raises
+        ------
+            ImproperlyConfigured: If the registered `HIDERS_CHECKER_CLASS` is not a subclass of
+            `HiderChecker`.
+            ImproperlyConfigured: If the `PERMISSIONS` setting is neither a list nor a tuple.
+
+        """
         if self._is_overridden('HIDERS_CHECKER_CLASS'):
             setting_value = getattr(self._settings_module, 'HIDERS_CHECKER_CLASS')  # noqa: B009
             if not isinstance(setting_value, type) or not issubclass(setting_value, HidersChecker):
