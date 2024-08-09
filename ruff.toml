@@ -15,7 +15,6 @@ ignore = [
     "ANN401",  # any-type
     "CPY001", # missing-copyright-notice
     "D205",  # blank-line-after-summary
-    "DOC501",  # docstring-missing-exception
     "N818",  # error-suffix-on-exception-name
     "PLC0415", # import-outside-top-level
     "PLC2701", # import-private-name
