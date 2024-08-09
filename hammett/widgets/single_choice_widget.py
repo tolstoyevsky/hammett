@@ -69,7 +69,7 @@ class SingleChoiceWidget(BaseChoiceWidget):
         """Switch the widget from one state to another."""
         current_choices = await self.get_initialized_choices(update, context)
 
-        return tuple([
+        return tuple(
             (choice_key == selected_choice[0], choice_key, choice_value)
             for _, choice_key, choice_value in current_choices
-        ])
+        )
