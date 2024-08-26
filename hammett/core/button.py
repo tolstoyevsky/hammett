@@ -47,9 +47,11 @@ class Button:
         source_type: 'SourcesTypes' = SourcesTypes.HANDLER_SOURCE_TYPE,
         hiders: 'Hider | None' = None,
         payload: str | None = None,
+        chat_id: int | None = None,
     ) -> None:
         """Initialize a button object."""
         self.caption = caption
+        self.chat_id = chat_id
         self.payload = payload
         self.source = source
         self.source_type = source_type
@@ -152,10 +154,11 @@ class Button:
             else:
                 source = cast('Handler', self.source)
 
+            chat_id = self._get_user_id(update, context) or self.chat_id
             data = (
                 f'{handlers.calc_checksum(source)},'
                 f'button={handlers.calc_checksum(self.caption)},'
-                f'user_id={self._get_user_id(update, context)}'
+                f'user_id={chat_id}'
             )
 
             if self.payload is not None:
