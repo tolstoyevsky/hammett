@@ -223,7 +223,7 @@ class LazySettings(LazyObject):
         )
 
     def __getattr__(self: 'Self', name: str) -> 'Any':
-        """Return the value of a setting and caches it in self.__dict__.
+        """Return the value of a setting and cache it in self.__dict__.
 
         Returns
         -------
