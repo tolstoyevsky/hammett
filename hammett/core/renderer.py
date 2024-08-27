@@ -45,20 +45,22 @@ class Renderer:
     def _create_input_media_document(
         self: 'Self',
         document: 'Document',
-        caption: str = '',
+        description: str,
     ) -> InputMediaDocument:
         """Create an object that represents a document to be sent."""
-        data = document.get('data')
-        if not data:
+        try:
+            media = document['media']
+        except KeyError as exc:
             msg = f'The document data of {self.__class__.__name__} is empty'
-            raise ScreenDocumentDataIsEmpty(msg)
+            raise ScreenDocumentDataIsEmpty(msg) from exc
 
-        return InputMediaDocument(
-            caption=caption,
-            filename=document.get('name', ''),
-            media=data,
-            parse_mode=ParseMode.HTML if self.html_parse_mode else DEFAULT_NONE,
-        )
+        document_kwargs = document.get('document_kwargs', {})
+        if not document_kwargs.get('caption'):
+            document_kwargs['caption'] = description
+
+        document_kwargs['parse_mode'] = ParseMode.HTML if self.html_parse_mode else DEFAULT_NONE
+
+        return InputMediaDocument(media, **document_kwargs)
 
     def _create_input_media_photo(
         self: 'Self',
@@ -130,10 +132,7 @@ class Renderer:
         """Return the kwargs for edit render method with media."""
         kwargs: Any = {}
         if isinstance(media, dict):
-            kwargs['media'] = self._create_input_media_document(
-                media,
-                caption=description,
-            )
+            kwargs['media'] = self._create_input_media_document(media, description)
         elif isinstance(media, PhotoSize):
             kwargs['media'] = self._create_input_media_photo(
                 caption=description,
@@ -183,8 +182,12 @@ class Renderer:
 
             send = context.bot.send_photo
         elif config.document:
-            kwargs['document'] = self._create_input_media_document(document=config.document).media
-            kwargs['caption'] = config.description
+            input_media_document = self._create_input_media_document(
+                config.document,
+                config.description,
+            )
+            kwargs['caption'] = input_media_document.caption
+            kwargs['document'] = input_media_document.media
 
             send = context.bot.send_document
         elif config.attachments:
