@@ -24,8 +24,8 @@ CheckUpdateType = tuple[object, ConversationKey, BaseHandler[Update, CCT], objec
 class Document(TypedDict):
     """The class implements the Document type."""
 
-    data: FileInput
-    name: str
+    media: FileInput
+    document_kwargs: JSONDict
 
 
 Keyboard = list[list[Button]]
