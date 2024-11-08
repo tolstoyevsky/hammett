@@ -209,8 +209,8 @@ class ApplicationTests(BaseTestCase):
             },
         )
 
-        sjump_callback = application._native_states[DEFAULT_STATE][2].callback
-        self.assertEqual(sjump_callback, TestRouteScreen().sjump)
+        jump_along_route_callback = application._native_states[DEFAULT_STATE][2].callback
+        self.assertEqual(jump_along_route_callback, TestRouteScreen().jump_along_route)
 
         move_along_route_callback = application._native_states[DEFAULT_STATE][3].callback
         self.assertEqual(move_along_route_callback, TestRouteScreen().move_along_route)
