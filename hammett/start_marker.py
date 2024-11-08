@@ -24,10 +24,7 @@ class StartMarker:
         """Parse start-makers."""
         markers = self._start_marker[len('/start '):]
         if markers:
-            markers = markers[1:] if markers.startswith('=') else markers
-            markers = markers[:-1] if markers.endswith('=') else markers
-
-            parts = markers.split('=')
+            parts = markers.removeprefix('=').removesuffix('=').split('=')
             if len(parts) % 2 != 0:
                 parts = ['source', *parts]
 
