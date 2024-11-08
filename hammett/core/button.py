@@ -20,17 +20,17 @@ if TYPE_CHECKING:
 
 _HANDLER_SOURCES_TYPES = (
     SourcesTypes.HANDLER_SOURCE_TYPE,
+    SourcesTypes.JUMP_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.JUMP_SOURCE_TYPE,
     SourcesTypes.MOVE_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.MOVE_SOURCE_TYPE,
-    SourcesTypes.SJUMP_SOURCE_TYPE,
 )
 
 _SHORTCUT_SOURCES_TYPES = (
+    SourcesTypes.JUMP_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.JUMP_SOURCE_TYPE,
     SourcesTypes.MOVE_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.MOVE_SOURCE_TYPE,
-    SourcesTypes.SJUMP_SOURCE_TYPE,
 )
 
 
@@ -75,7 +75,7 @@ class Button:
                     self.source_shortcut = cast('Handler', screen().jump)
                 elif self.source_type == SourcesTypes.MOVE_SOURCE_TYPE:
                     self.source_shortcut = cast('Handler', screen().move)
-                elif self.source_type == SourcesTypes.SJUMP_SOURCE_TYPE:
+                elif self.source_type == SourcesTypes.JUMP_ALONG_ROUTE_SOURCE_TYPE:
                     self.source_shortcut = cast(
                         'Handler', screen().jump_along_route,   # type: ignore[attr-defined]
                     )
