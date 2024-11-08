@@ -21,16 +21,16 @@ if TYPE_CHECKING:
 _HANDLER_SOURCES_TYPES = (
     SourcesTypes.HANDLER_SOURCE_TYPE,
     SourcesTypes.JUMP_SOURCE_TYPE,
+    SourcesTypes.MOVE_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.MOVE_SOURCE_TYPE,
     SourcesTypes.SJUMP_SOURCE_TYPE,
-    SourcesTypes.SMOVE_SOURCE_TYPE,
 )
 
 _SHORTCUT_SOURCES_TYPES = (
     SourcesTypes.JUMP_SOURCE_TYPE,
+    SourcesTypes.MOVE_ALONG_ROUTE_SOURCE_TYPE,
     SourcesTypes.MOVE_SOURCE_TYPE,
     SourcesTypes.SJUMP_SOURCE_TYPE,
-    SourcesTypes.SMOVE_SOURCE_TYPE,
 )
 
 
