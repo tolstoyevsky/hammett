@@ -62,7 +62,7 @@ class RouteMixin(Screen):
         await self.render(update, context, config=config)
         return await self.get_return_state_from_routes(update, context)
 
-    async def smove(
+    async def move_along_route(
         self: 'Self',
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',

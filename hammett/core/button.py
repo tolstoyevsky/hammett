@@ -81,7 +81,7 @@ class Button:
                     )
                 else:
                     self.source_shortcut = cast(
-                        'Handler', screen().smove,  # type: ignore[attr-defined]
+                        'Handler', screen().move_along_route,  # type: ignore[attr-defined]
                     )
             else:
                 msg = (
