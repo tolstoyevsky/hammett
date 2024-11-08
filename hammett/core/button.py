@@ -77,7 +77,7 @@ class Button:
                     self.source_shortcut = cast('Handler', screen().move)
                 elif self.source_type == SourcesTypes.SJUMP_SOURCE_TYPE:
                     self.source_shortcut = cast(
-                        'Handler', screen().sjump,   # type: ignore[attr-defined]
+                        'Handler', screen().jump_along_route,   # type: ignore[attr-defined]
                     )
                 else:
                     self.source_shortcut = cast(

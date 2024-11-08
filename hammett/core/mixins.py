@@ -47,7 +47,7 @@ class RouteMixin(Screen):
 
         return current_state
 
-    async def sjump(
+    async def jump_along_route(
         self: 'Self',
         update: 'Update',
         context: 'CallbackContext[BT, UD, CD, BD]',
