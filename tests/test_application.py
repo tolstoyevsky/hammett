@@ -212,8 +212,8 @@ class ApplicationTests(BaseTestCase):
         sjump_callback = application._native_states[DEFAULT_STATE][2].callback
         self.assertEqual(sjump_callback, TestRouteScreen().sjump)
 
-        smove_callback = application._native_states[DEFAULT_STATE][3].callback
-        self.assertEqual(smove_callback, TestRouteScreen().smove)
+        move_along_route_callback = application._native_states[DEFAULT_STATE][3].callback
+        self.assertEqual(move_along_route_callback, TestRouteScreen().move_along_route)
 
     @override_settings(TOKEN='')
     def test_unsuccessful_application_initialization_with_empty_token(self):
