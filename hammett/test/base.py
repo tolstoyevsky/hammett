@@ -30,13 +30,12 @@ both Hammett itself and the bots based on the framework.
 
 import asyncio
 import unittest
-from asyncio import Queue
 from typing import TYPE_CHECKING
 
 from asgiref.sync import async_to_sync
 from telegram import Bot, Update
 from telegram._utils.defaultvalue import DEFAULT_NONE
-from telegram.ext import Application, CallbackContext, ContextTypes
+from telegram.ext import Application, ApplicationBuilder, CallbackContext
 
 from hammett.conf import settings
 
@@ -62,15 +61,6 @@ class TestBot(Bot):
         return {}
 
 
-class TestContext(CallbackContext):  # type: ignore[type-arg]
-    """Class representing CallbackContext for testing purposes."""
-
-    @property
-    def bot(self: 'Self') -> 'TestBot':
-        """Return the test bot instance."""
-        return TestBot(token=settings.TOKEN, base_file_url='')
-
-
 class BaseTestCase(unittest.TestCase):
     """The class that subclasses unittest.TestCase to make it
     familiar with the specifics of the framework.
@@ -81,20 +71,14 @@ class BaseTestCase(unittest.TestCase):
 
     def __init__(self: 'Self', method_name: str) -> None:
         """Initialize a base test case object."""
-        self.context: CallbackContext = TestContext(  # type: ignore[type-arg]
-            Application(
-                bot=TestBot(token=settings.TOKEN),
-                update_queue=Queue(),
-                updater=None,
-                job_queue=None,
+        naive_application = (
+            ApplicationBuilder().bot(
+                TestBot(token=settings.TOKEN),
+            ).concurrent_updates(
                 concurrent_updates=False,
-                persistence=None,
-                context_types=ContextTypes(),  # type: ignore[arg-type]
-                post_init=None,
-                post_shutdown=None,
-                post_stop=None,
-            ),
+            ).application_class(Application).build()
         )
+        self.context = CallbackContext(naive_application)
         self.update = Update(1)
 
         super().__init__(method_name)
