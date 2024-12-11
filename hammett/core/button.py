@@ -64,6 +64,26 @@ class Button:
     # Private methods
     #
 
+    def __eq__(self, other: object) -> bool:
+        """Compare two Button objects."""
+        if not isinstance(other, Button):
+            return super().__eq__(other)
+
+        return (
+            self.caption == other.caption and
+            self.source == other.source and
+            self.source_type == other.source_type and
+            self.hiders == other.hiders and
+            self.payload == other.payload and
+            self.chat_id == other.chat_id
+        )
+
+    def __hash__(self) -> int:
+        """Return the object hash."""
+        return hash((
+            self.caption, self.source, self.source_type, self.hiders, self.payload, self.chat_id,
+        ))
+
     def _check_source(self: 'Self') -> None:
         """Check if the source is valid. If it's invalid, the method raises `TypeError`."""
         from hammett.core.screen import Screen
