@@ -49,7 +49,7 @@ def import_string(dotted_path: str) -> type['Any']:
     module = import_module(module_path)
 
     try:
-        return cast(type, getattr(module, class_name))
+        return cast('type', getattr(module, class_name))
     except AttributeError as err:
         msg = f'Module "{module_path}" does not define a "{class_name}" attribute/class'
         raise ImportError(msg) from err
