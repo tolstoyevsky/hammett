@@ -62,7 +62,11 @@ class TestBot(Bot):
         pool_timeout: 'ODVInput[float]' = DEFAULT_NONE,  # noqa: ARG002
     ) -> 'bool | JSONDict | list[JSONDict]':
         """Override the method not to send any request."""
-        return {}
+        return {
+            'message_id': 1,
+            'from_user': 1,
+            'date': datetime.now(timezone.utc).timestamp(),
+        }
 
 
 class BaseTestCase(unittest.TestCase):
