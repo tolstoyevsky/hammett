@@ -29,10 +29,13 @@ both Hammett itself and the bots based on the framework.
 """
 
 import asyncio
+import difflib
+import pprint
 import unittest
+from dataclasses import asdict
 from datetime import datetime, timezone
 from typing import TYPE_CHECKING
-from unittest.util import safe_repr
+from unittest.util import _common_shorten_repr
 
 from asgiref.sync import async_to_sync
 from telegram import Bot, Chat, Message, Update, User
@@ -104,3 +107,49 @@ class BaseTestCase(unittest.TestCase):
             setattr(self, self._testMethodName, async_to_sync(test_method))
 
         super().__call__(result)
+
+    def prepare_final_render_config(
+        self,
+        config: 'RenderConfig | FinalRenderConfig',
+    ) -> 'FinalRenderConfig':
+        """Transform `FinalRenderConfig` from `RenderConfig` if `RenderConfig` is provided,
+        and pass the chat id to `FinalRenderConfig` for future assertions in tests.
+        """
+        if not isinstance(config, FinalRenderConfig):
+            # The default keyboard needs to be replaced when casting to FinalRenderConfig.
+            if config.keyboard is None:
+                config.keyboard = []
+
+            config = FinalRenderConfig(**asdict(config))
+
+        config.chat_id = self.chat.id
+        return config
+
+    def assertFinalRenderConfigEqual(  # noqa: N802
+        self,
+        expected: 'FinalRenderConfig',
+        actual: 'FinalRenderConfig',
+        msg: str | None = None,
+    ) -> None:
+        """Compare two FinalRenderConfig objects."""
+        self.assertIsInstance(
+            expected, FinalRenderConfig, 'First argument is not a FinalRenderConfig',
+        )
+        self.assertIsInstance(
+            actual, FinalRenderConfig, 'Second argument is not a FinalRenderConfig',
+        )
+
+        if expected != actual:
+            first_config_repr, second_config_repr = _common_shorten_repr(
+                expected, actual,  # type: ignore[arg-type]
+            )
+
+            standard_msg = f'{first_config_repr} != {second_config_repr}'
+            diff = '\n' + '\n'.join(difflib.ndiff(
+                pprint.pformat(expected).splitlines(),
+                pprint.pformat(actual).splitlines(),
+            ))
+
+            standard_msg = self._truncateMessage(standard_msg, diff)  # type: ignore[attr-defined]
+
+            self.fail(self._formatMessage(msg, standard_msg))
