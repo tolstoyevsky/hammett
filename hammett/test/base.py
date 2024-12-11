@@ -30,14 +30,18 @@ both Hammett itself and the bots based on the framework.
 
 import asyncio
 import unittest
+from datetime import datetime, timezone
 from typing import TYPE_CHECKING
+from unittest.util import safe_repr
 
 from asgiref.sync import async_to_sync
-from telegram import Bot, Update
+from telegram import Bot, Chat, Message, Update, User
 from telegram._utils.defaultvalue import DEFAULT_NONE
+from telegram.constants import ChatType
 from telegram.ext import Application, ApplicationBuilder, CallbackContext
 
 from hammett.conf import settings
+from hammett.core.constants import FinalRenderConfig, RenderConfig
 
 if TYPE_CHECKING:
     from telegram._utils.types import JSONDict, ODVInput
@@ -78,8 +82,14 @@ class BaseTestCase(unittest.TestCase):
                 concurrent_updates=False,
             ).application_class(Application).build()
         )
-        self.context = CallbackContext(naive_application)
-        self.update = Update(1)
+        chat_id = 1
+        self.chat = Chat(chat_id, ChatType.PRIVATE)
+
+        self.context = CallbackContext(naive_application, chat_id=chat_id)
+
+        self.user = User(1, 'TestUser', is_bot=False)
+        self.message = Message(1, datetime.now(tz=timezone.utc), self.chat, from_user=self.user)
+        self.update = Update(1, message=self.message)
 
         super().__init__(method_name)
 
