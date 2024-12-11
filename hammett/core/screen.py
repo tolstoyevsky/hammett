@@ -246,6 +246,12 @@ class Screen:
     ) -> None:
         """Render the screen components (i.e., cover, description and keyboard)."""
         final_config = await self._finalize_config(update, context, config)
+
+        # It's necessary for unit tests. So, if you override this method,
+        # don't forget these lines to avoid breaking the tests.
+        from hammett.test import utils as test_utils
+        await test_utils.hook_final_render_config(final_config)
+
         await self._pre_render(update, context, final_config, **kwargs)
 
         message = await self.renderer.render(update, context, final_config, **kwargs)

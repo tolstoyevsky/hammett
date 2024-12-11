@@ -29,6 +29,7 @@
 import asyncio
 from functools import wraps
 from typing import TYPE_CHECKING, cast
+from unittest.mock import AsyncMock, MagicMock, patch
 
 from hammett.conf import GlobalSettings, settings
 
@@ -39,6 +40,7 @@ if TYPE_CHECKING:
 
     from typing_extensions import Self
 
+    from hammett.core.constants import FinalRenderConfig
     from hammett.types import Func
 
 
@@ -110,6 +112,39 @@ class TestContextDecorator:
         raise TypeError(msg)
 
 
+class catch_render_config(TestContextDecorator):  # noqa: N801
+    """The class implements a decorator to capture the value of `RenderConfig`."""
+
+    def __init__(self: 'Self') -> None:
+        """Initialize a patcher for the `FinalRenderConfig` state hook."""
+        self.hook_patcher = patch('hammett.test.utils.hook_final_render_config')
+        self.mock: MagicMock | AsyncMock | None = None
+
+        super().__init__(kwarg_name='actual')
+
+    def enable(self: 'Self') -> 'Self':
+        """Invoke when execution enters the context of the `with` statement."""
+        self.mock = self.hook_patcher.start()
+        return self
+
+    def disable(self: 'Self') -> None:
+        """Invoke when execution leaves the context of the `with` statement."""
+        self.hook_patcher.stop()
+
+    @property
+    def final_render_config(self) -> 'FinalRenderConfig | None':
+        """Return `FinalRenderConfig` that was used for the screen render."""
+        if not self.mock:
+            return None
+
+        try:
+            config: FinalRenderConfig = self.mock.call_args[0][0]
+        except (TypeError, IndexError, AttributeError):
+            return None
+        else:
+            return config
+
+
 class override_settings(TestContextDecorator):  # noqa: N801
     """Decorate tests to perform temporary alterations of the settings."""
 
@@ -134,3 +169,9 @@ class override_settings(TestContextDecorator):  # noqa: N801
         """Invoke when execution leaves the context of the with statement."""
         settings._wrapped = self.wrapped  # noqa: SLF001
         del self.wrapped
+
+
+async def hook_final_render_config(_final_config: 'FinalRenderConfig') -> None:
+    """Doesn't do anything. It's replaced with a mock during tests and
+    captures the final render config.
+    """
