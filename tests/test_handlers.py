@@ -6,8 +6,8 @@ from hammett.core.constants import DEFAULT_STATE
 from hammett.core.exceptions import CommandNameIsEmpty
 from hammett.core.handlers import (
     _clear_command_name,
-    _get_handler_name,
     calc_checksum,
+    get_handler_name,
     register_button_handler,
     register_command_handler,
 )
@@ -49,7 +49,7 @@ class HandlersTests(BaseTestCase):
         screen = TestScreenWithHandler()
         handler = cast('Handler', screen.handler)
 
-        handler_name = _get_handler_name(handler)
+        handler_name = get_handler_name(handler)
         self.assertEqual('TestScreenWithHandler.handler', handler_name)
 
     def test_getting_static_handler_name(self):
@@ -57,7 +57,7 @@ class HandlersTests(BaseTestCase):
         screen = TestScreenWithStaticHandler()
         handler = cast('Handler', screen.handler)
 
-        handler_name = _get_handler_name(handler)
+        handler_name = get_handler_name(handler)
         self.assertEqual('TestScreenWithStaticHandler.handler', handler_name)
 
     def test_registering_command_handler_without_specified_command_name(self):
