@@ -19,6 +19,8 @@ ERROR_HANDLER_CONF = {
     'IGNORE_UPDATE_MASSAGE_FAIL': False,
 }
 
+HANDLERS_STOPWATCH = False
+
 HIDERS_CHECKER = ''
 
 HTML_PARSE_MODE = True
@@ -51,6 +53,8 @@ REDIS_PERSISTENCE = {
 }
 
 SAVE_LATEST_MESSAGE = False
+
+STOPWATCH_STATS_PROCESSOR = 'hammett.stopwatch.stats.PrintStatsProcessor'
 
 TOKEN = ''
 
