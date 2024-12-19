@@ -63,3 +63,7 @@ WEBHOOK_PORT = 80
 WEBHOOK_URL_PATH = ''
 
 WEBHOOK_URL = ''
+
+HANDLERS_STOPWATCH = False
+
+STOPWATCH_STATS_PROCESSOR = 'hammett.stopwatch.stats.PrintStatsProcessor'
