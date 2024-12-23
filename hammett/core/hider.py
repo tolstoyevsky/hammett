@@ -29,6 +29,17 @@ class Hider:
         self.hider: int = hider
         self.hiders_set: set[int] = {hider}
 
+    def __eq__(self, other: object) -> bool:
+        """Compare two Hider objects."""
+        if not isinstance(other, Hider):
+            return super().__eq__(other)
+
+        return self.hider == other.hider and self.hiders_set == other.hiders_set
+
+    def __hash__(self) -> int:
+        """Return object hash."""
+        return hash((self.hider, self.hiders_set))
+
     def __or__(self: 'Self', other: 'Hider') -> 'Self':
         """Perform `or` operation."""
         self.hiders_set.add(other.hider)
