@@ -1,10 +1,15 @@
 """The module contains the tests for the render config which is generated in handlers."""
 
-from hammett.core import Screen
-from hammett.core.constants import RenderConfig
+from hammett.core import Button, Screen
+from hammett.core.constants import RenderConfig, SourcesTypes
+from hammett.core.hider import ONLY_FOR_ADMIN, Hider
 from hammett.test.base import BaseTestCase
-from hammett.test.utils import catch_render_config
+from hammett.test.utils import catch_render_config, override_settings
 from tests.base import BaseTestScreenWithDescription, TestScreen, TestStartScreen
+
+_TEST_BUTTON_NAME = 'Test button'
+
+_TEST_URL = 'https://github.com/cusdeb-com/hammett'
 
 
 class BaseTestScreenWithDynamicDescription(Screen):
@@ -28,6 +33,21 @@ class TestScreenWithDynamicAndStaticDescriptions(
 
 class TestScreenWithDynamicDescription(BaseTestScreenWithDynamicDescription):
     """The class represents the screen with a dynamic description for testing purposes."""
+
+
+class TestScreenWithSpecifiedHiderInKeyboard(BaseTestScreenWithDescription):
+    """The class implements a screen for the tests with a specified hider in the keyboard."""
+
+    async def add_default_keyboard(self, _update, _context):
+        """Return a keyboard with the specified hider."""
+        return [[
+            Button(
+                _TEST_BUTTON_NAME,
+                _TEST_URL,
+                hiders=Hider(ONLY_FOR_ADMIN),
+                source_type=SourcesTypes.URL_SOURCE_TYPE,
+            ),
+        ]]
 
 
 class HandlersRenderTests(BaseTestCase):
@@ -97,5 +117,27 @@ class HandlersRenderTests(BaseTestCase):
         expected = self.prepare_final_render_config(RenderConfig(
             as_new_message=True,
             description=TestStartScreen.description,
+        ))
+        self.assertFinalRenderConfigEqual(expected, actual.final_render_config)
+
+    @override_settings(
+        IS_ADMIN=False,
+        HIDERS_CHECKER='tests.test_hiders_check_mechanism.TestHidersChecker',
+    )
+    @catch_render_config()
+    async def test_screen_render_with_specified_hider_in_keyboard(self, actual):
+        """Test getting a final render config with a specified hider in the keyboard."""
+        await TestScreenWithSpecifiedHiderInKeyboard().move(self.update, self.context)
+
+        expected = self.prepare_final_render_config(RenderConfig(
+            description=TestScreenWithSpecifiedHiderInKeyboard.description,
+            keyboard=[[
+                Button(
+                    _TEST_BUTTON_NAME,
+                    _TEST_URL,
+                    hiders=Hider(ONLY_FOR_ADMIN),
+                    source_type=SourcesTypes.URL_SOURCE_TYPE,
+                ),
+            ]],
         ))
         self.assertFinalRenderConfigEqual(expected, actual.final_render_config)
