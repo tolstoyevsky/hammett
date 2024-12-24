@@ -89,10 +89,10 @@ class BaseTestCase(unittest.TestCase):
                 concurrent_updates=False,
             ).application_class(Application).build()
         )
-        chat_id = 1
+        chat_id = user_id = 1
         self.chat = Chat(chat_id, ChatType.PRIVATE)
 
-        self.context = CallbackContext(naive_application, chat_id=chat_id)
+        self.context = CallbackContext(naive_application, chat_id=chat_id, user_id=user_id)
 
         self.user = User(1, 'TestUser', is_bot=False)
         self.message = Message(1, datetime.now(tz=timezone.utc), self.chat, from_user=self.user)
