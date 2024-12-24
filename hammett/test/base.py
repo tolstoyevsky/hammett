@@ -68,6 +68,10 @@ class TestBot(Bot):
         return {
             'message_id': 1,
             'from_user': 1,
+            'chat': {
+                'id': 1,
+                'type': ChatType.PRIVATE,
+            },
             'date': datetime.now(timezone.utc).timestamp(),
         }
 
