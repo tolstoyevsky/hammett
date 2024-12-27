@@ -3,6 +3,7 @@
 # ruff: noqa: S106, SLF001
 
 from fakeredis import FakeAsyncRedis
+from telegram.ext import CallbackContext
 
 from hammett.core.constants import DEFAULT_STATE, LATEST_SENT_MSG_KEY
 from hammett.core.exceptions import ScreenDescriptionIsEmpty
@@ -37,6 +38,13 @@ class TestScreenWithoutDescription(Screen):
 
 class ScreenTests(BaseTestCase):
     """The class implements the tests for the screens."""
+
+    def get_context(self):
+        """Return the `CallbackContext` object for testing purposes."""
+        return CallbackContext(
+            self.get_native_application(),
+            chat_id=self.chat_id,
+        )
 
     async def test_screen_without_description(self):
         """Test the case when a description of a screen is empty."""
