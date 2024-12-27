@@ -3,6 +3,7 @@
 # ruff: noqa: SLF001
 
 from fakeredis import FakeAsyncRedis
+from telegram.ext import CallbackContext
 
 from hammett.core.persistence import RedisPersistence
 from hammett.test.base import BaseTestCase
@@ -32,6 +33,13 @@ class TestCarouselWidget(BaseTestCarouselWidget):
 
 class CarouselWidgetTests(BaseTestCase):
     """The class implements the tests for CarouselWidget."""
+
+    def get_context(self):
+        """Return the `CallbackContext` object for testing purposes."""
+        return CallbackContext(
+            self.get_native_application(),
+            chat_id=self.chat_id,
+        )
 
     async def test_updating_user_data_after_sending_carousel_widget_as_notification(self):
         """Test updating the user_data when a screen based on CarouselWidget is sent
