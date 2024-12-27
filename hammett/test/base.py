@@ -84,23 +84,18 @@ class BaseTestCase(unittest.TestCase):
     update: 'Update'
     context: 'CallbackContext'  # type: ignore[type-arg]
 
+    chat_id = 1
+    message_id = 1
+    update_id = 1
+    user_id = 1
+
     def __init__(self: 'Self', method_name: str) -> None:
         """Initialize a base test case object."""
-        naive_application = (
-            ApplicationBuilder().bot(
-                TestBot(token=settings.TOKEN),
-            ).concurrent_updates(
-                concurrent_updates=False,
-            ).application_class(Application).build()
-        )
-        chat_id = user_id = 1
-        self.chat = Chat(chat_id, ChatType.PRIVATE)
-
-        self.context = CallbackContext(naive_application, chat_id=chat_id, user_id=user_id)
-
-        self.user = User(1, 'TestUser', is_bot=False)
-        self.message = Message(1, datetime.now(tz=timezone.utc), self.chat, from_user=self.user)
-        self.update = Update(1, message=self.message)
+        self.chat = self.get_chat()
+        self.context = self.get_context()
+        self.user = self.get_user()
+        self.message = self.get_message()
+        self.update = self.get_update()
 
         super().__init__(method_name)
 
@@ -111,6 +106,43 @@ class BaseTestCase(unittest.TestCase):
             setattr(self, self._testMethodName, async_to_sync(test_method))
 
         super().__call__(result)
+
+    def get_chat(self) -> 'Chat':
+        """Return the `Chat` object for testing purposes."""
+        return Chat(self.chat_id, ChatType.PRIVATE)
+
+    def get_context(self) -> 'CallbackContext':  # type: ignore[type-arg]
+        """Return the `CallbackContext` object for testing purposes."""
+        return CallbackContext(
+            self.get_native_application(),
+            chat_id=self.chat_id,
+            user_id=self.user_id,
+        )
+
+    def get_message(self) -> 'Message':
+        """Return the `Message` object for testing purposes."""
+        return Message(
+            self.message_id,
+            datetime.now(tz=timezone.utc),
+            self.chat,
+            from_user=self.user,
+        )
+
+    def get_native_application(self) -> 'Application':  # type: ignore[type-arg]
+        """Return the `Application` object for testing purposes."""
+        return ApplicationBuilder().bot(
+            TestBot(token=settings.TOKEN),
+        ).concurrent_updates(
+            concurrent_updates=False,
+        ).application_class(Application).build()
+
+    def get_update(self) -> 'Update':
+        """Return the `Update` object for testing purposes."""
+        return Update(self.update_id, message=self.message)
+
+    def get_user(self) -> 'User':
+        """Return the `User` object for testing purposes."""
+        return User(self.user_id, 'TestUser', is_bot=False)
 
     def prepare_final_render_config(
         self,
