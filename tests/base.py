@@ -16,15 +16,15 @@ from hammett.core.screen import Screen
 
 APPLICATION_TEST_NAME = 'test'
 
-CHAT_ID = 123456789
+CHAT_ID = 1
 
-MESSAGE_ID = 123
+MESSAGE_ID = 1
 
 PERMISSION_DENIED_STATE = '1'
 
 PERMISSIONS_ORDER = []
 
-USER_ID = 123456789
+USER_ID = 1
 
 
 class BaseTestPermission(Permission, ABC):
