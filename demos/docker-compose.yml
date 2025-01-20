@@ -1,0 +1,14 @@
+services:
+  simple-jump-bot:
+    build:
+      dockerfile: ./simple_jump_bot/Dockerfile
+    env_file: ./simple_jump_bot/.env
+    depends_on:
+      - valkey
+    restart: always
+
+  valkey:
+    image: valkey/valkey:8.0
+    restart: always
+    volumes:
+      - ./_valkey_data:/data
