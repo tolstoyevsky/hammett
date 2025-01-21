@@ -34,6 +34,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    env:
+      PYTHONPATH: ${{ github.workspace }}
+
     steps:
       - uses: actions/checkout@v3
 
@@ -47,9 +50,9 @@ jobs:
 
       - name: Run demos tests
         run: |
-          env PYTHONPATH=$(pwd) HAMMETT_SETTINGS_MODULE=demos.simple_jump_bot.settings python3 demos/simple_jump_bot/tests.py
+          env HAMMETT_SETTINGS_MODULE=demos.simple_jump_bot.settings python3 demos/simple_jump_bot/tests.py
 
       - name: Run Hammett tests
         run: |
-          env PYTHONPATH=$(pwd) HAMMETT_SETTINGS_MODULE=tests.settings coverage run -m unittest discover
+          env HAMMETT_SETTINGS_MODULE=tests.settings coverage run -m unittest discover
           coverage report
