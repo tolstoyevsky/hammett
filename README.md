@@ -20,7 +20,7 @@ env PYTHONPATH=$(pwd) python3 tests/run_tests.py
 You can also run the tests with coverage, using the following command:
 
 ```bash
-env PYTHONPATH=$(pwd) HAMMETT_SETTINGS_MODULE=tests.settings coverage run -m unittest discover
+env PYTHONPATH=$(pwd) HAMMETT_SETTINGS_MODULE=tests.settings coverage run -m unittest discover -s tests/
 coverage report
 ```
 
