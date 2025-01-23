@@ -60,3 +60,12 @@ class LatestMessage(TypedDict):
     chat_id: int
     message_id: int
     hide_keyboard: bool
+
+
+class HandlerStats(TypedDict):
+    """The class represents an information about the handler stats."""
+
+    cpu_time: float
+    select_time: float
+    other_io_time: float
+    real_time: float
