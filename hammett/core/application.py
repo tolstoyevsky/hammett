@@ -105,7 +105,7 @@ class Application:
         handler: 'HandlerAlias',
         handler_type: 'Any | str | None',
         possible_handler: 'Handler',
-    ) -> CallbackQueryHandler[Any] | MessageHandler[Any]:
+    ) -> CallbackQueryHandler[Any, Any] | MessageHandler[Any, Any]:
         """Return the handler object depending on its type.
 
         Returns
@@ -117,7 +117,7 @@ class Application:
             UnknownHandlerType: If the handler type is unknown.
 
         """
-        handler_object: CallbackQueryHandler[Any] | MessageHandler[Any]
+        handler_object: CallbackQueryHandler[Any, Any] | MessageHandler[Any, Any]
         if handler_type in {HandlerType.BUTTON_HANDLER, ''}:
             handler_object = CallbackQueryHandler(
                 handler,
