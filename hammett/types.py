@@ -18,7 +18,7 @@ from hammett.core.screen import Screen
 if TYPE_CHECKING:
     from typing_extensions import Self
 
-CheckUpdateType = tuple[object, ConversationKey, BaseHandler[Update, CCT], object]
+CheckUpdateType = tuple[object, ConversationKey, BaseHandler[Update, CCT, object], object]
 
 
 class Document(TypedDict):
