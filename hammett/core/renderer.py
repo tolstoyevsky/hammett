@@ -205,6 +205,7 @@ class Renderer:
         }
 
         cover = config.cover
+        send: Callable[..., Awaitable[Any]]
         if cover:
             if self._is_url(cover) and config.cache_covers:
                 cover = f'{cover}?{uuid4()}'
