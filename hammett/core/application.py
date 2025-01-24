@@ -132,7 +132,7 @@ class Application:
             )
         elif handler_type == HandlerType.INPUT_HANDLER:
             handler_object = MessageHandler(
-                possible_handler.filters,  # type: ignore[arg-type]
+                possible_handler.filters,
                 handler,
             )
         elif handler_type == HandlerType.TYPING_HANDLER:

@@ -70,7 +70,7 @@ class RedisPersistence(BasePersistence[UD, CD, BD]):
 
         """
         super().__init__(
-            store_data=store_data,  # type: ignore[arg-type]
+            store_data=store_data,
             update_interval=update_interval,
         )
 
