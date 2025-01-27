@@ -1,5 +1,9 @@
 """The module contains the implementation of the high-level application class."""
 
+# ruff: noqa: PLR2004
+
+import logging
+import sys
 from typing import TYPE_CHECKING, Any
 
 from telegram import Update
@@ -37,6 +41,8 @@ if TYPE_CHECKING:
     from hammett.types import Handler, HandlerAlias, NativeStates, State, States
 
 __all__ = ('Application', )
+
+logger = logging.getLogger(__name__)
 
 
 class Application:
@@ -269,6 +275,19 @@ class Application:
     def run(self: 'Self') -> None:
         """Run the application."""
         from hammett.conf import settings
+
+        if ((
+            sys.version_info.minor == 11 and (
+            sys.version_info.micro == 5 or sys.version_info.micro == 6
+        )) or (
+            sys.version_info.minor == 12 and sys.version_info.micro == 0
+        )):
+            logger.warning(
+                "It's recommended to avoid using the following versions of Python: "
+                "3.11.5, 3.11.6, and 3.12.0. The reason for this recommendation is that "
+                "these versions raise a `RuntimeError` upon application termination, "
+                "which may lead to an improper shutdown process.",
+            )
 
         if settings.USE_WEBHOOK:
             self._native_application.run_webhook(
