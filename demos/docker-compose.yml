@@ -1,4 +1,12 @@
 services:
+  say-hello-bot:
+    build:
+      dockerfile: ./say_hello_bot/Dockerfile
+    env_file: ./say_hello_bot/.env
+    depends_on:
+      - valkey
+    restart: always
+
   simple-jump-bot:
     build:
       dockerfile: ./simple_jump_bot/Dockerfile
