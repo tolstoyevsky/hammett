@@ -1,4 +1,12 @@
 services:
+  clicker-bot:
+    build:
+      dockerfile: ./clicker_bot/Dockerfile
+    env_file: ./clicker_bot/.env
+    depends_on:
+      - valkey
+    restart: always
+
   say-hello-bot:
     build:
       dockerfile: ./say_hello_bot/Dockerfile
