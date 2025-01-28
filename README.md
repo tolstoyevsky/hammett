@@ -3,7 +3,7 @@
 Hammett is a framework whose main goal is to simplify building *commercial* Telegram bots with clear code and a good architecture. By commercial bots are meant such bots that require the support of
 * several roles of users (admin, beta testers, moderators, etc.) to manage the visibility of some parts of the user interface;
 * the permissions mechanism to implement a **maintenance mode**, **paywall**, etc.
-* storing the users state in and restoring it from Redis.
+* storing the users state in and restoring it from Redis / Valkey.
 
 <p align="center">
     <img src="/logo/1633x1380.png" alt="Hammett" style="max-width: 100%; width: 500px">
