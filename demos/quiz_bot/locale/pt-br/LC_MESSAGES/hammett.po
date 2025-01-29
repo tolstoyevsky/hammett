@@ -1,0 +1,52 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Hammett 0.4.0\n"
+"POT-Creation-Date: 2024-05-13 16:39+0300\n"
+"PO-Revision-Date: 2024-05-13 16:58+0300\n"
+"Language: pt-br\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+
+#
+# Screen descriptions
+#
+
+msgid "language_switcher_screen"
+msgstr ""
+"Aqui você pode escolher o idioma apropriado.\n"
+"\n"
+"Três estão disponíveis:\n"
+"- English\n"
+"- Português\n"
+"- Русский"
+
+msgid "main_menu_screen"
+msgstr ""
+"Bem-vindo ao HammettQuizBot!\n"
+"\n"
+"Há suporte para multilinguismo 🌍 Você pode mudar o idioma do bot "
+"antes de começar o quiz.\n"
+"\n"
+"Experimente ou comece agora mesmo!"
+
+msgid "result_screen"
+msgstr ""
+"Você atingiu a <b>ResultScreen</b> e ganhou "
+"<b>{correct_answers_num}</b>/<b>{questions_num}</b> pontos!\n"
+"\n"
+"Sempre há uma tentativa de refazer o quiz com outras perguntas por lá 😉"
+
+#
+# Button captions
+#
+
+msgid "🌍 Change Language"
+msgstr "🌍 Alterar Idioma"
+
+msgid "🏠 Main Menu"
+msgstr "🏠 Menu Principal"
+
+msgid "Next ➡️"
+msgstr "Próximo ➡️"
+
+msgid "❓ Start Quiz"
+msgstr "❓ Iniciar Questionário"
