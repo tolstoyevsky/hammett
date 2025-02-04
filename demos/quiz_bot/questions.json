@@ -1,0 +1,47 @@
+[
+  {
+    "question": {
+      "en": "How to create a variable in Python?",
+      "pt-br": "Como criar uma variável em Python?",
+      "ru": "Как создать переменную в Python?"
+    },
+    "answers": ["variable = value", "var value", "createVar()"],
+    "correct_answer": 0
+  },
+  {
+    "question": {
+      "en": "What data types can be used in Python?",
+      "pt-br": "Quais tipos de dados podem ser usados em Python?",
+      "ru": "Какие типы данных можно использовать в Python?"
+    },
+    "answers": ["int, str, bool", "list, dict, set", "float, tuple, array"],
+    "correct_answer": [0, 1]
+  },
+  {
+    "question": {
+      "en": "Which data type is used to store integers in Python?",
+      "pt-br": "Qual tipo de dados é usado para armazenar inteiros em Python?",
+      "ru": "Какой тип данных используется для хранения целых чисел в Python?"
+    },
+    "answers": ["num", "integer", "int"],
+    "correct_answer": 2
+  },
+  {
+    "question": {
+      "en": "How can you add an element to the end of a list in Python?",
+      "pt-br": "Como você pode adicionar um elemento ao final de uma lista em Python?",
+      "ru": "Каким образом можно добавить элемент в конец списка в Python?"
+    },
+    "answers": ["list.add()", "list.insert()", "list.append()"],
+    "correct_answer": 2
+  },
+  {
+    "question": {
+      "en": "Which symbol is used for comments in Python?",
+      "pt-br": "Qual símbolo é usado para comentários em Python?",
+      "ru": "Какой символ используется для комментариев в Python?"
+    },
+    "answers": ["//", "#", "\"\"\"\"\"\""],
+    "correct_answer": [1, 2]
+  }
+]
